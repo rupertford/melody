@@ -1,4 +1,4 @@
-## jinja2 templated gromacs input file for use with melody
+{# jinja2 templated gromacs input file for use with melody #}
 integrator               = md
 tinit                    = 0.0
 dt                       = 0.002
@@ -18,7 +18,7 @@ pbc                      = xyz
 rlist                    = 1.4
 
 coulombtype              = PME
-rcoulomb                 = {{ rcoulomb }} ## original value was 1.4
+rcoulomb                 = {{ rcoulomb }} {# original value was 1.4 #}
 fourierspacing           = 0.12
 pme_order                = 4
 ewald_rtol               = 1.0E-5
@@ -29,7 +29,7 @@ rvdw_switch              = 1.0
 rvdw                     = 1.2
 DispCorr                 = no
 
-tcoupl                   = {{ tcoupl }} ## original value was Berendsen
+tcoupl                   = {{ tcoupl }} {# original value was Berendsen #}
 tc_grps                  = System
 tau_t                    = 1.0
 ref_t                    = 300.0
