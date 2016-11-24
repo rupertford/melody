@@ -1,5 +1,22 @@
 ''' '''
 
+class Fixed(object):
+    ''' '''
+
+    def __init__(self, name=None, value=None):
+        self._name = name
+        self._options = [value]
+
+    @property
+    def options(self):
+        ''' '''
+        return self._options
+
+    @property
+    def name(self):
+        ''' '''
+        return self._name
+
 
 class Switch(object):
     ''' '''
@@ -8,7 +25,15 @@ class Switch(object):
         self._name = name
         self._off = off
         self._on = on
-        self._options = [off, on]
+        self._options = []
+        if off:
+            self._options.append(off)
+        else:
+            self._options.append("")
+        if on:
+            self._options.append(on)
+        else:
+            self._options.append("")
 
     @property
     def options(self):
@@ -24,9 +49,14 @@ class Switch(object):
 class Choice(object):
     ''' '''
 
-    def __init__(self, name=None, inputs=None):
+    def __init__(self, name=None, pre=None, inputs=None):
         self._name = name
-        self._options = inputs
+        self._options = []
+        for value in inputs:
+            if pre:
+                self._options.append(pre+value)
+            else:
+                self._options.append(value)
 
     @property
     def options(self):
@@ -110,3 +140,23 @@ class Subsets(object):
     def name(self):
         ''' '''
         return self._name
+
+def create_input(option, template_name, template_location = "template"):
+
+    '''create an input file using jinja2 by filling a template
+    with the values from the option variable passed in.'''
+
+    # restructure option list into jinja2 input format
+    jinja2_input = {}
+    for item in option:
+        jinja2_input.update(item)
+
+    # load the template and fill it with the option variable contents
+    import jinja2
+    templateLoader = jinja2.FileSystemLoader( searchpath=template_location )
+    templateEnv = jinja2.Environment( loader=templateLoader )
+    template = templateEnv.get_template( template_name )
+    outputText = template.render( jinja2_input )
+
+    # return the particular input file as a string
+    return outputText

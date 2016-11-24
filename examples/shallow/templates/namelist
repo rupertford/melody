@@ -1,0 +1,10 @@
+&global_domain
+  m = {{ SIZE }},          ! points in the y direction
+  n = {{ SIZE }},          ! points in the x direction
+  itmax = 2000,     ! number of iterations
+  mprint = 5000     ! frequency of output prints
+/
+
+&io_control
+  l_out = .TRUE.   ! whether to include output
+/

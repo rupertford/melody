@@ -50,6 +50,7 @@ class BruteForce(SearchMethod):
                 self._recurse(inputs[1:], my_output)
         else:
             valid, result = self._function(output)
+            print output, valid, result
 
 
 class Switch(object):

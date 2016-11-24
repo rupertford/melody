@@ -12,17 +12,17 @@ def test_function(options):
     case we always return True) followed by the target output (in our
     case we simply copy the inputs to the outputs'''
 
-    mi_name = "Module inline"
-    for option in options:
-        if option.keys()[0] == mi_name:
-            print "{'"+mi_name+"': [",
-            for item in option[mi_name]:
-                print "'"+item.name+"'",
-            print "]",
-        else:
-            print option,
-    print
-    return True, options
+    #mi_name = "Module inline"
+    #for option in options:
+    #    if option.keys()[0] == mi_name:
+    #        print "{'"+mi_name+"': [",
+    #        for item in option[mi_name]:
+    #            print "'"+item.name+"'",
+    #        print "]",
+    #    else:
+    #        print option,
+    #print
+    return True, [42]
 
 
 class ArrayBounds(Choice):
