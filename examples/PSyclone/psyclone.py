@@ -50,24 +50,56 @@ class ModuleInline(Subsets):
 class GOLoopFuse(object):
     ''' '''
 
-    def __init__(self, psy=None):
-        self._name = "Loop Fusion"
-        self._psy = psy
+    def _recurse(self, siblings, my_index, output):
         from transformations import GOceanLoopFuseTrans, TransformationError
         trans = GOceanLoopFuseTrans()
-        for invoke in psy.invokes.invoke_list:
-            print "new invoke ..."
-            loops = []
-            for loop in invoke.schedule.loops():
-                if loop.loop_type == "outer":
-                    loops.append(loop)
-            for index1 in range(len(loops)):
-                for index2 in range(index1+1, len(loops)):
-                    try:
-                        trans._validate(loops[index1], loops[index2])
-                        print "Fusion of {0} {1} possible".format(index1, index2)
-                    except TransformationError:
-                        break
+        # siblings includes this loop
+        n_siblings = len(siblings)
+        index = my_index+1
+        valid = True
+        while index<n_siblings and valid:
+            try:
+                trans._validate(siblings[index-1], siblings[index])
+                output.append([index-1, index])
+                print "Fusion for {0} possible".format(output)
+                my_output = []
+                self._recurse(siblings, index+1, output)
+            except TransformationError:
+                break
+            index += 1
+
+    def __init__(self, psy=None, dependent_invokes=False):
+        self._name = "Loop Fusion"
+        self._psy = psy
+        invokes = psy.invokes.invoke_list
+        print "there are {0} invokes".format(len(invokes))
+        if dependent_invokes:
+            print ("dependent invokes assumes fusion in one invoke might affect fusion "
+                   "in another invoke. This is not yet implemented")
+            exit(1)
+        else:
+            # treat each invoke separately
+            for idx, invoke in enumerate(invokes):
+                print "invoke {0}".format(idx)
+                # iterate through each outer loop
+                for loop in invoke.schedule.loops():
+                    if loop.loop_type == "outer":
+                        siblings = loop.parent.children
+                        my_index = siblings.index(loop)
+                        output = []
+                        self._recurse(siblings, my_index, output)
+            exit(1)
+                        
+            #        next = loop.parent.children[my_index+1]
+            #        exit(1)
+            #                    loops.append(loop)
+            #            for index1 in range(len(loops)):
+            #                for index2 in range(index1+1, len(loops)):
+            #                    try:
+            #                        trans._validate(loops[index1], loops[index2])
+            #                        print "Fusion of {0} {1} possible".format(index1, index2)
+            #                    except TransformationError:
+            #                        break
         exit(1)
         # get the loop fusion input options from PSyclone
         self._options = []
@@ -82,7 +114,8 @@ class GOLoopFuse(object):
         ''' '''
         return self._name
 
-FILE = "/home/rupert/proj/GungHo/PSyclone_trunk/examples/gocean/shallow_alg.f90"
+#FILE = "/home/rupert/proj/GungHo/PSyclone_trunk/examples/gocean/shallow_alg.f90"
+FILE = "/home/rupert/proj/GungHoSVN/PSyclone_trunk/examples/gocean/shallow_alg.f90"
 from parse import parse
 from psyGen import PSyFactory
 _, invoke_info = parse(FILE, api="gocean1.0")
@@ -91,6 +124,7 @@ psy = PSyFactory("gocean1.0").create(invoke_info)
 # TBD   ArrayBounds(),
 # TBD   GOLoopFuse(psy=psy),
 INPUTS = [
+    GOLoopFuse(psy=psy),
     ModuleInline(psy=psy),
     Choice(name="Problem Size", inputs=["64", "128", "256", "512", "1024"])]
 
