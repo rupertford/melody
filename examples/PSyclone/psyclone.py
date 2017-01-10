@@ -12,16 +12,23 @@ def test_function(options):
     case we always return True) followed by the target output (in our
     case we simply copy the inputs to the outputs'''
 
-    #mi_name = "Module inline"
-    #for option in options:
-    #    if option.keys()[0] == mi_name:
-    #        print "{'"+mi_name+"': [",
-    #        for item in option[mi_name]:
-    #            print "'"+item.name+"'",
-    #        print "]",
-    #    else:
-    #        print option,
-    #print
+    for option in options:
+        name = option.keys()[0]
+        values = option[name]
+        if name == "Module inline":
+            print "skipping module inline"
+        elif name == "Problem Size":
+            print "skipping problem size"
+        elif name == "Loop Fusion":
+            print "Performing requested loop fusion ..."
+            for invoke in values:
+                print "fusion for invoke '{0}'".format(invoke.name)
+                print dir(psy.invokes)
+                my_invoke = psy.invokes.invoke_map[invoke.name]
+                print my_invoke.name
+                # loop fuse here - as we have the objects, do we need to find the invoke?
+                # how do we reset the changes - we need to do a deep copy? we need undo to work?
+    exit(1)
     return True, [42]
 
 
