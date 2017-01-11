@@ -4,9 +4,10 @@
 class SearchMethod(object):
     '''A utility baseclass for different search/optimisation methods'''
 
-    def __init__(self, function=None, inputs=None):
+    def __init__(self, function=None, inputs=None, state=None):
         self._function = function
         self._inputs = inputs
+        self._state = None
 
     @property
     def function(self):
@@ -28,12 +29,22 @@ class SearchMethod(object):
         '''Set the input search parameters for this instance of search method'''
         self._inputs = inputs
 
+    @property
+    def state(self):
+        '''Return the xxx for this instance of search method'''
+        return self._state
+
+    @state.setter
+    def state(self, state):
+        '''Set the xxx for this instance of search method'''
+        self._state = state
+
 
 class BruteForce(SearchMethod):
     '''A search method that tests all input options'''
 
-    def __init__(self, function=None, inputs=None):
-        SearchMethod.__init__(self, function=function, inputs=inputs)
+    def __init__(self, function=None, inputs=None, state=None):
+        SearchMethod.__init__(self, function=function, inputs=inputs, state=state)
 
     def run(self):
         ''' perform the search over inputs'''
@@ -43,12 +54,19 @@ class BruteForce(SearchMethod):
         '''internal recursion routine called by the run method that generates
         all input combinations'''
         if inputs:
-            name = inputs[0].name
-            for option in inputs[0].options:
+            my_input = inputs[0]
+            name = my_input.name
+            if my_input.state:
+                my_options = my_input.options(self.state)
+            else:
+                my_options = my_input.options
+            for option in my_options:
                 my_output = list(output)
                 my_output.append({name:option})
                 self._recurse(inputs[1:], my_output)
         else:
+            print type(inputs)
+            exit(1)
             valid, result = self._function(output)
             print output, valid, result
 

@@ -6,7 +6,8 @@ from melody.inputs import Switch, Choice, IntRange, FloatRange, Subsets
 from melody.search import BruteForce
 from melody.main import Melody
 
-def test_function(options):
+
+def test_function(options, psy):
     '''A dummy test function. The function takes a list of inputs as an
     argument and returns whether the execution was successful (in our
     case we always return True) followed by the target output (in our
@@ -23,11 +24,13 @@ def test_function(options):
             print "Performing requested loop fusion ..."
             for invoke in values:
                 print "fusion for invoke '{0}'".format(invoke.name)
-                print dir(psy.invokes)
-                my_invoke = psy.invokes.invoke_map[invoke.name]
+                print dir(my_psy.invokes)
+                my_invoke = my_psy.invokes.invoke_map[invoke.name]
                 print my_invoke.name
-                # loop fuse here - as we have the objects, do we need to find the invoke?
-                # how do we reset the changes - we need to do a deep copy? we need undo to work?
+                from transformations import GOceanLoopFuseTrans, TransformationError
+                for loops in values:
+                    psy, _ = trans.apply(loops[0], loops[1])
+            my_invoke.view()
     exit(1)
     return True, [42]
 
@@ -76,13 +79,18 @@ class GOLoopFuse(object):
                 break
             index += 1
 
-    def __init__(self, psy=None, dependent_invokes=False):
+    def __init__(self, dependent_invokes=False):
+        self.state = True # tell melody that I expect state data (psy) to be passed
         self._name = "Loop Fusion"
-        self._options = []
-        self._psy = psy
+        self._dependent_invokes = dependent_invokes
+
+    def options(self, psy):
+        ''' '''
+        # compute options dynamically here as they may depend on previous changes to the psy tree
+        my_options = []
         invokes = psy.invokes.invoke_list
         #print "there are {0} invokes".format(len(invokes))
-        if dependent_invokes:
+        if self._dependent_invokes:
             print ("dependent invokes assumes fusion in one invoke might affect fusion "
                    "in another invoke. This is not yet implemented")
             exit(1)
@@ -96,13 +104,9 @@ class GOLoopFuse(object):
                         siblings = loop.parent.children
                         my_index = siblings.index(loop)
                         option = []
-                        self._recurse(siblings, my_index, option, self._options, invoke)
-            #print self._options
+                        self._recurse(siblings, my_index, option, my_options, invoke)
 
-    @property
-    def options(self):
-        ''' '''
-        return self._options
+        return my_options
 
     @property
     def name(self):
@@ -118,9 +122,9 @@ psy = PSyFactory("gocean1.0").create(invoke_info)
 
 # TBD   ArrayBounds(),
 INPUTS = [
-    GOLoopFuse(psy=psy),
+    GOLoopFuse(),
     ModuleInline(psy=psy),
     Choice(name="Problem Size", inputs=["64", "128", "256", "512", "1024"])]
 
-MELODY = Melody(inputs=INPUTS, function=test_function, method=BruteForce)
+MELODY = Melody(inputs=INPUTS, function=test_function, state=psy, method=BruteForce)
 MELODY.search()

@@ -5,9 +5,10 @@ the optimisation of software on hpc architectures'''
 class Melody(object):
     ''' The main class '''
 
-    def __init__(self, function=None, method=None, inputs=None):
+    def __init__(self, function=None, method=None, state=None, inputs=None):
         self._function = function
         self._method = method
+        self._state = state
         self._inputs = inputs
 
     @property
@@ -48,4 +49,5 @@ melody'''
         search = self._method()
         search.inputs = self._inputs
         search.function = self._function
+        search.state = self._state
         search.run()
