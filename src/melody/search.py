@@ -65,8 +65,6 @@ class BruteForce(SearchMethod):
                 my_output.append({name:option})
                 self._recurse(inputs[1:], my_output)
         else:
-            print type(inputs)
-            exit(1)
             valid, result = self._function(output)
             print output, valid, result
 

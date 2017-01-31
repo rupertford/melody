@@ -1,93 +1,74 @@
 ''' '''
 
-class Fixed(object):
+class Base(object):
     ''' '''
 
-    def __init__(self, name=None, value=None):
+    def __init__(self, name, options, state=False):
+        self._state = state
         self._name = name
-        self._options = [value]
-
-    @property
-    def options(self):
-        ''' '''
-        return self._options
-
-    @property
-    def name(self):
-        ''' '''
-        return self._name
-
-
-class Switch(object):
-    ''' '''
-
-    def __init__(self, name=None, off=None, on=None):
-        self._name = name
-        self._off = off
-        self._on = on
-        self._options = []
-        if off:
-            self._options.append(off)
-        else:
-            self._options.append("")
-        if on:
-            self._options.append(on)
-        else:
-            self._options.append("")
-
-    @property
-    def options(self):
-        ''' '''
-        return self._options
-
-    @property
-    def name(self):
-        ''' '''
-        return self._name
-
-
-class Choice(object):
-    ''' '''
-
-    def __init__(self, name=None, pre=None, inputs=None):
-        self._name = name
-        self._options = []
-        for value in inputs:
-            if pre:
-                self._options.append(pre+value)
-            else:
-                self._options.append(value)
-
-    @property
-    def options(self):
-        ''' '''
-        return self._options
-
-    @property
-    def name(self):
-        ''' '''
-        return self._name
-
-
-class Range(object):
-    ''' '''
-
-    def __init__(self, name=None, low=None, high=None, step=None, options=None):
-        self._name = name
-        self._low = low
-        self._high = high
-        self._step = step
         self._options = options
 
     @property
-    def options(self):
+    def state(self):
         ''' '''
-        return self._options
+        return self._state
 
     @property
     def name(self):
         ''' '''
         return self._name
+
+    @property
+    def options(self):
+        ''' '''
+        return self._options
+
+
+class Fixed(Base):
+    ''' '''
+
+    def __init__(self, name=None, value=None):
+        options = [value]
+        Base.__init__(self, name, options)
+
+
+class Switch(Base):
+    ''' '''
+
+    def __init__(self, name=None, off=None, on=None):
+        options = []
+        if off:
+            options.append(off)
+        else:
+            options.append("")
+        if on:
+            options.append(on)
+        else:
+            options.append("")
+        Base.__init__(self, name, options)
+
+
+class Choice(Base):
+    ''' '''
+
+    def __init__(self, name=None, pre=None, inputs=None):
+        options = []
+        for value in inputs:
+            if pre:
+                options.append(pre+value)
+            else:
+                options.append(value)
+        Base.__init__(self, name, options)
+
+
+class Range(Base):
+    ''' '''
+
+    def __init__(self, name=None, low=None, high=None, step=None, options=None):
+        self._low = low
+        self._high = high
+        self._step = step
+        Base.__init__(self, name, options)
 
 
 class IntRange(Range):
@@ -109,16 +90,15 @@ class FloatRange(Range):
                        options=options)
 
 
-class Subsets(object):
+class Subsets(Base):
     ''' '''
 
     def __init__(self, name=None, inputs=None):
-        self._name = name
         self._inputs = inputs
         self._options = []
         for k in range(len(inputs)+1):
             self._recurse(inputs, [], depth=0, max_depth=k)
-        print "Subsets found {0} options".format(len(self._options))
+        Base.__init__(self, name, self._options)
 
     def _recurse(self, inputs, output, depth, max_depth):
         ''' '''
@@ -131,15 +111,6 @@ class Subsets(object):
         else:
             self._options.append(output)
 
-    @property
-    def options(self):
-        ''' '''
-        return self._options
-
-    @property
-    def name(self):
-        ''' '''
-        return self._name
 
 def create_input(option, template_name, template_location = "template"):
 
