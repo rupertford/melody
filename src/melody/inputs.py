@@ -1,6 +1,6 @@
 ''' '''
 
-class Base(object):
+class Input(object):
     ''' '''
 
     def __init__(self, name, options, state=False):
@@ -24,15 +24,15 @@ class Base(object):
         return self._options
 
 
-class Fixed(Base):
+class Fixed(Input):
     ''' '''
 
     def __init__(self, name=None, value=None):
         options = [value]
-        Base.__init__(self, name, options)
+        Input.__init__(self, name, options)
 
 
-class Switch(Base):
+class Switch(Input):
     ''' '''
 
     def __init__(self, name=None, off=None, on=None):
@@ -45,10 +45,10 @@ class Switch(Base):
             options.append(on)
         else:
             options.append("")
-        Base.__init__(self, name, options)
+        Input.__init__(self, name, options)
 
 
-class Choice(Base):
+class Choice(Input):
     ''' '''
 
     def __init__(self, name=None, pre=None, inputs=None):
@@ -58,17 +58,17 @@ class Choice(Base):
                 options.append(pre+value)
             else:
                 options.append(value)
-        Base.__init__(self, name, options)
+        Input.__init__(self, name, options)
 
 
-class Range(Base):
+class Range(Input):
     ''' '''
 
     def __init__(self, name=None, low=None, high=None, step=None, options=None):
         self._low = low
         self._high = high
         self._step = step
-        Base.__init__(self, name, options)
+        Input.__init__(self, name, options)
 
 
 class IntRange(Range):
@@ -90,7 +90,7 @@ class FloatRange(Range):
                        options=options)
 
 
-class Subsets(Base):
+class Subsets(Input):
     ''' '''
 
     def __init__(self, name=None, inputs=None):
@@ -98,7 +98,7 @@ class Subsets(Base):
         self._options = []
         for k in range(len(inputs)+1):
             self._recurse(inputs, [], depth=0, max_depth=k)
-        Base.__init__(self, name, self._options)
+        Input.__init__(self, name, self._options)
 
     def _recurse(self, inputs, output, depth, max_depth):
         ''' '''
