@@ -60,7 +60,8 @@ def test_function(options, psy):
                 print dir(my_psy.invokes)
                 my_invoke = my_psy.invokes.invoke_map[invoke.name]
                 print my_invoke.name
-                from transformations import GOceanLoopFuseTrans, TransformationError
+                from transformations import GOceanLoopFuseTrans, \
+                    TransformationError
                 for loops in values:
                     psy, _ = trans.apply(loops[0], loops[1])
             my_invoke.view()
@@ -100,32 +101,36 @@ class GOLoopFuse(object):
         # siblings includes this loop
         n_siblings = len(siblings)
         index = my_index+1
-        while index<n_siblings:
+        while index < n_siblings:
             try:
                 trans._validate(siblings[index-1], siblings[index])
                 my_options.append([siblings[index-1], siblings[index]])
                 #print "Fusion for {0} possible".format(my_options)
                 if my_options:
-                    all_options.append({invoke:list(my_options)})
-                self._recurse(siblings, index+1, my_options, all_options, invoke)
+                    all_options.append({invoke: list(my_options)})
+                self._recurse(siblings, index+1, my_options, all_options,
+                              invoke)
             except TransformationError:
                 break
             index += 1
 
     def __init__(self, dependent_invokes=False):
-        self.state = True # tell melody that I expect state data (psy) to be passed
+        # tell melody that I expect state data (psy) to be passed
+        self.state = True
         self._name = "Loop Fusion"
         self._dependent_invokes = dependent_invokes
 
     def options(self, psy):
         ''' '''
-        # compute options dynamically here as they may depend on previous changes to the psy tree
+        # compute options dynamically here as they may depend on previous
+        # changes to the psy tree
         my_options = []
         invokes = psy.invokes.invoke_list
         #print "there are {0} invokes".format(len(invokes))
         if self._dependent_invokes:
-            print ("dependent invokes assumes fusion in one invoke might affect fusion "
-                   "in another invoke. This is not yet implemented")
+            print ("dependent invokes assumes fusion in one invoke might "
+                   "affect fusion in another invoke. This is not yet "
+                   "implemented")
             exit(1)
         else:
             # treat each invoke separately
@@ -137,7 +142,8 @@ class GOLoopFuse(object):
                         siblings = loop.parent.children
                         my_index = siblings.index(loop)
                         option = []
-                        self._recurse(siblings, my_index, option, my_options, invoke)
+                        self._recurse(siblings, my_index, option, my_options,
+                                      invoke)
 
         return my_options
 
@@ -146,8 +152,10 @@ class GOLoopFuse(object):
         ''' '''
         return self._name
 
-#FILE = "/home/rupert/proj/GungHo/PSyclone_trunk/examples/gocean/shallow_alg.f90"
-FILE = "/home/rupert/proj/GungHoSVN/PSyclone_trunk/examples/gocean/shallow_alg.f90"
+#FILE = "/home/rupert/proj/GungHo/PSyclone_trunk/examples/gocean/
+#shallow_alg.f90"
+FILE = ("/home/rupert/proj/GungHoSVN/PSyclone_trunk/examples/"
+        "gocean/shallow_alg.f90")
 from parse import parse
 from psyGen import PSyFactory
 _, invoke_info = parse(FILE, api="gocean1.0")
@@ -159,5 +167,6 @@ INPUTS = [
     ModuleInline(psy=psy),
     Choice(name="Problem Size", inputs=["64", "128", "256", "512", "1024"])]
 
-MELODY = Melody(inputs=INPUTS, function=test_function, state=psy, method=BruteForce)
+MELODY = Melody(inputs=INPUTS, function=test_function, state=psy,
+                method=BruteForce)
 MELODY.search()

@@ -33,6 +33,7 @@
 #
 ''' '''
 
+
 class Input(object):
     ''' '''
 
@@ -97,7 +98,8 @@ class Choice(Input):
 class Range(Input):
     ''' '''
 
-    def __init__(self, name=None, low=None, high=None, step=None, options=None):
+    def __init__(self, name=None, low=None, high=None, step=None,
+                 options=None):
         self._low = low
         self._high = high
         self._step = step
@@ -135,7 +137,7 @@ class Subsets(Input):
 
     def _recurse(self, inputs, output, depth, max_depth):
         ''' '''
-        if depth<max_depth:
+        if depth < max_depth:
             for index in range(len(inputs)):
                 option = inputs[index]
                 my_output = list(output)
@@ -145,7 +147,7 @@ class Subsets(Input):
             self._options.append(output)
 
 
-def create_input(option, template_name, template_location = "template"):
+def create_input(option, template_name, template_location="template"):
 
     '''create an input file using jinja2 by filling a template
     with the values from the option variable passed in.'''
@@ -157,10 +159,10 @@ def create_input(option, template_name, template_location = "template"):
 
     # load the template and fill it with the option variable contents
     import jinja2
-    templateLoader = jinja2.FileSystemLoader( searchpath=template_location )
-    templateEnv = jinja2.Environment( loader=templateLoader )
-    template = templateEnv.get_template( template_name )
-    outputText = template.render( jinja2_input )
+    templateLoader = jinja2.FileSystemLoader(searchpath=template_location)
+    templateEnv = jinja2.Environment(loader=templateLoader)
+    template = templateEnv.get_template(template_name)
+    outputText = template.render(jinja2_input)
 
     # return the particular input file as a string
     return outputText

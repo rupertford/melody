@@ -44,7 +44,8 @@ class SearchMethod(object):
 
     @property
     def function(self):
-        '''Return the function associated with this instance of search method'''
+        '''Return the function associated with this instance of search
+        method'''
         return self._function
 
     @function.setter
@@ -54,12 +55,14 @@ class SearchMethod(object):
 
     @property
     def inputs(self):
-        '''Return the input search parameters for this instance of search method'''
+        '''Return the input search parameters for this instance of search
+        method'''
         return self._inputs
 
     @inputs.setter
     def inputs(self, inputs):
-        '''Set the input search parameters for this instance of search method'''
+        '''Set the input search parameters for this instance of search
+        method'''
         self._inputs = inputs
 
     @property
@@ -77,7 +80,8 @@ class BruteForce(SearchMethod):
     '''A search method that tests all input options'''
 
     def __init__(self, function=None, inputs=None, state=None):
-        SearchMethod.__init__(self, function=function, inputs=inputs, state=state)
+        SearchMethod.__init__(self, function=function, inputs=inputs,
+                              state=state)
 
     def run(self):
         ''' perform the search over inputs'''
@@ -95,7 +99,7 @@ class BruteForce(SearchMethod):
                 my_options = my_input.options
             for option in my_options:
                 my_output = list(output)
-                my_output.append({name:option})
+                my_output.append({name: option})
                 self._recurse(inputs[1:], my_output)
         else:
             valid, result = self._function(output)
@@ -143,7 +147,8 @@ class Choice(object):
 class Range(object):
     ''' '''
 
-    def __init__(self, name=None, low=None, high=None, step=None, options=None):
+    def __init__(self, name=None, low=None, high=None, step=None,
+                 options=None):
         self._name = name
         self._low = low
         self._high = high
@@ -193,7 +198,7 @@ class Subsets(object):
 
     def _recurse(self, inputs, output, depth, max_depth):
         ''' '''
-        if depth<max_depth:
+        if depth < max_depth:
             for index in range(len(inputs)):
                 option = inputs[index]
                 my_output = list(output)

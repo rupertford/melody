@@ -35,6 +35,7 @@
 
 from melody.inputs import create_input
 
+
 def execute(option):
     ''' xxx '''
 
@@ -44,16 +45,18 @@ def execute(option):
     for entry in option:
         key = entry.keys()[0]
         if key == "Problem Size":
-            namelist_option.append({"SIZE":entry[key]})
+            namelist_option.append({"SIZE": entry[key]})
         elif key == "F90":
             makefile_option.append(entry)
         else:
             flags += entry[key] + " "
-    makefile_option.append({"F90FLAGS":flags})
-            
-    namelist = create_input(namelist_option, "namelist", template_location="templates")
+    makefile_option.append({"F90FLAGS": flags})
 
-    makefile_include = create_input(makefile_option, "Makefile.include", template_location="templates")
+    namelist = create_input(namelist_option, "namelist",
+                            template_location="templates")
+
+    makefile_include = create_input(makefile_option, "Makefile.include",
+                                    template_location="templates")
 
     benchmark_base = "/home/rupert/proj/GOcean/shallow_benchmark"
 
@@ -71,17 +74,24 @@ def execute(option):
     # compile shallow if required
     #import os
     #os.chdir("/home/rupert/proj/GOcean/shallow_benchmark/original")
+    base_path = "/home/rupert/proj/GOcean/shallow_benchmark/original"
     import subprocess
-    make_process = subprocess.Popen(["make", "clean"], cwd="/home/rupert/proj/GOcean/shallow_benchmark/original",  stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    make_process = subprocess.Popen(["make", "clean"], cwd=base_path,
+                                    stderr=subprocess.PIPE,
+                                    stdout=subprocess.PIPE)
     if make_process.wait() != 0:
         return False, []
 
-    make_process = subprocess.Popen(["make"], cwd="/home/rupert/proj/GOcean/shallow_benchmark/original", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    make_process = subprocess.Popen(["make"], cwd=base_path,
+                                    stderr=subprocess.PIPE,
+                                    stdout=subprocess.PIPE)
     if make_process.wait() != 0:
         return False, []
 
     # run shallow
-    make_process = subprocess.Popen(["./shallow_base"], cwd="/home/rupert/proj/GOcean/shallow_benchmark/original", stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    make_process = subprocess.Popen(["./shallow_base"], cwd=base_path,
+                                    stderr=subprocess.PIPE,
+                                    stdout=subprocess.PIPE)
     if make_process.wait() != 0:
         return False, []
     stderr = make_process.stderr.read()
