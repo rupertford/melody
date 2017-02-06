@@ -35,12 +35,14 @@
 melody. The specific example will be the shallow benchmark but we do
 not interface to it yet.'''
 
-from melody.inputs import Switch, Choice, IntRange, FloatRange, Subsets
+from melody.inputs import Choice, Subsets
 from melody.search import BruteForce
 from melody.main import Melody
+from parse import parse
+from psyGen import PSyFactory
 
 
-def test_function(options, psy):
+def test_function(options, my_psy):
     '''A dummy test function. The function takes a list of inputs as an
     argument and returns whether the execution was successful (in our
     case we always return True) followed by the target output (in our
@@ -62,28 +64,32 @@ def test_function(options, psy):
                 print my_invoke.name
                 from transformations import GOceanLoopFuseTrans, \
                     TransformationError
+                trans = GOceanLoopFuseTrans()
                 for loops in values:
-                    psy, _ = trans.apply(loops[0], loops[1])
+                    _, _ = trans.apply(loops[0], loops[1])
             my_invoke.view()
     exit(1)
     return True, [42]
 
 
 class ArrayBounds(Choice):
+    '''A specialisation of the melody Choice input class providing
+    array-bound-specific choices for the GOcean 1.0 api.'''
     def __init__(self):
-        Choice.__init(self, name="Array Bounds",
-                      options=["", "Specified", "Constant"])
+        Choice.__init__(self, name="Array Bounds",
+                        options=["", "Specified", "Constant"])
 
 
 class ModuleInline(Subsets):
-    ''' '''
+    '''A specialisation of the melody Subsets input class providing all
+    possible combinations of module inlining for the particular code.'''
 
     def __init__(self, psy=None):
         self._psy = psy
         # get the kernels that can be inlined from PSyclone
         kernels = []
         kernel_names = []
-        for invoke in psy.invokes.invoke_list:
+        for invoke in self._psy.invokes.invoke_list:
             for kernel in invoke.schedule.kern_calls():
                 if kernel.name not in kernel_names:
                     kernel_names.append(kernel.name)
@@ -92,7 +98,8 @@ class ModuleInline(Subsets):
 
 
 class GOLoopFuse(object):
-    ''' '''
+    '''A GOcean-specific melody input class providing all possible
+    combinations of loop fusion for the particular code.'''
 
     def _recurse(self, siblings, my_index, options, all_options, invoke):
         from transformations import GOceanLoopFuseTrans, TransformationError
@@ -120,12 +127,13 @@ class GOLoopFuse(object):
         self._name = "Loop Fusion"
         self._dependent_invokes = dependent_invokes
 
-    def options(self, psy):
-        ''' '''
+    def options(self, my_psy):
+        '''Returns all potential loop fusion options for the psy object
+        provided'''
         # compute options dynamically here as they may depend on previous
         # changes to the psy tree
         my_options = []
-        invokes = psy.invokes.invoke_list
+        invokes = my_psy.invokes.invoke_list
         #print "there are {0} invokes".format(len(invokes))
         if self._dependent_invokes:
             print ("dependent invokes assumes fusion in one invoke might "
@@ -149,24 +157,22 @@ class GOLoopFuse(object):
 
     @property
     def name(self):
-        ''' '''
+        '''Returns the name of the melody input class '''
         return self._name
 
 #FILE = "/home/rupert/proj/GungHo/PSyclone_trunk/examples/gocean/
 #shallow_alg.f90"
 FILE = ("/home/rupert/proj/GungHoSVN/PSyclone_trunk/examples/"
         "gocean/shallow_alg.f90")
-from parse import parse
-from psyGen import PSyFactory
-_, invoke_info = parse(FILE, api="gocean1.0")
-psy = PSyFactory("gocean1.0").create(invoke_info)
+_, INVOKE_INFO = parse(FILE, api="gocean1.0")
+PSY = PSyFactory("gocean1.0").create(INVOKE_INFO)
 
 # TBD   ArrayBounds(),
 INPUTS = [
     GOLoopFuse(),
-    ModuleInline(psy=psy),
+    ModuleInline(psy=PSY),
     Choice(name="Problem Size", inputs=["64", "128", "256", "512", "1024"])]
 
-MELODY = Melody(inputs=INPUTS, function=test_function, state=psy,
+MELODY = Melody(inputs=INPUTS, function=test_function, state=PSY,
                 method=BruteForce)
 MELODY.search()
