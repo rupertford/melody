@@ -36,7 +36,7 @@ jinja2 to set input values, Longbow to run gromacs and some text
 processing to extract the required results. However, we do not yet do
 so.'''
 
-from melody.inputs import Switch, Choice, IntRange, FloatRange, Subsets
+from melody.inputs import Choice, FloatRange
 from melody.main import Melody
 from melody.search import BruteForce
 from launch import launch

@@ -31,13 +31,15 @@
 #
 # Author R. Ford STFC Daresbury Lab.
 #
-''' '''
+'''An example use of melody in which we search a set of compiler
+flags to find the best runtime for the shallow benchmark'''
 
 from melody.inputs import create_input
 
 
 def execute(option):
-    ''' xxx '''
+    '''A script that melody calls with each valid set of options. This
+    script runs the required code and returns the results.'''
 
     namelist_option = []
     makefile_option = []
@@ -62,14 +64,14 @@ def execute(option):
 
     # save the input files in the appropriate place
     location = benchmark_base + "/original/namelist"
-    f = open(location, 'w')
-    f.write(namelist)
-    f.flush()
+    my_file = open(location, 'w')
+    my_file.write(namelist)
+    my_file.flush()
 
     location = benchmark_base + "/common/Makefile.include"
-    f = open(location, 'w')
-    f.write(makefile_include)
-    f.flush()
+    my_file = open(location, 'w')
+    my_file.write(makefile_include)
+    my_file.flush()
 
     # compile shallow if required
     #import os
@@ -94,7 +96,7 @@ def execute(option):
                                     stdout=subprocess.PIPE)
     if make_process.wait() != 0:
         return False, []
-    stderr = make_process.stderr.read()
+    _ = make_process.stderr.read()
     stdout = make_process.stdout.read()
 
     # determine if the results are correct. We will need to look at

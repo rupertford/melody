@@ -40,7 +40,7 @@ def launch(option):
     gromacs and extract and return the required outputs.'''
 
     from melody.inputs import create_input
-    input_file = create_input(option, template_name="input.mdp")
+    _ = create_input(option, template_name="input.mdp")
 
     # save the input file in the appropriate place and launch gromacs using
     # longbow ...
