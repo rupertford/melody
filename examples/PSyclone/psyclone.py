@@ -62,8 +62,7 @@ def test_function(options, my_psy):
                 print dir(my_psy.invokes)
                 my_invoke = my_psy.invokes.invoke_map[invoke.name]
                 print my_invoke.name
-                from transformations import GOceanLoopFuseTrans, \
-                    TransformationError
+                from transformations import GOceanLoopFuseTrans
                 trans = GOceanLoopFuseTrans()
                 for loops in values:
                     _, _ = trans.apply(loops[0], loops[1])
