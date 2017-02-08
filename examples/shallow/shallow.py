@@ -41,7 +41,8 @@ from melody.main import Melody
 from execute import execute
 
 # inputs taken from https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
-# more flags and info is here ... https://gcc.gnu.org/onlinedocs/gcc-4.5.3/gcc/i386-and-x86_002d64-Options.html
+# more flags and info is here ... https://gcc.gnu.org/onlinedocs/gcc-4.5.3/
+# gcc/i386-and-x86_002d64-Options.html
 INPUTS = [
     Fixed(name="F90", value="gfortran"),
     Choice(name="F90FLAGS", inputs=["-O2", "-O3", "-Ofast"]),
@@ -51,8 +52,8 @@ INPUTS = [
 
 # TBD
 # *** try different inline-limit values
-# -fwhole-program needs to be part of compile and fails as we link timer libraries
-#    Switch(name="Single program", on="-fwhole-program"),
+# -fwhole-program needs to be part of compile and fails as we link timer
+# libraries Switch(name="Single program", on="-fwhole-program"),
 # flto needs to be on both compile and link as do all optimisation options
 
 # ignore lower levels of optimisation

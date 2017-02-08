@@ -31,34 +31,40 @@
 #
 # Author R. Ford STFC Daresbury Lab.
 #
-''' '''
+'''This file contains a set of input classes that users can use to
+define the space they want to search. These classes can also be
+specialised for particular scenarios.'''
+
 
 class Input(object):
-    ''' '''
+    '''This is the base class for all types of input class.'''
 
-    def __init__(self, name, options, state=False):
+    def __init__(self, name, options, state=None):
         self._state = state
         self._name = name
         self._options = options
 
     @property
     def state(self):
-        ''' '''
+        '''Returns the state variable. This is 'None' by default.'''
         return self._state
 
     @property
     def name(self):
-        ''' '''
+        '''Returns the name of the input class. All classes are expected to
+        define a name'''
         return self._name
 
     @property
     def options(self):
-        ''' '''
+        '''Returns the particular set of options that are valid for the
+        instance of the input'''
         return self._options
 
 
 class Fixed(Input):
-    ''' '''
+    '''This class simply returns a single fixed value. It therefore does
+    not add to the search space. Rather it is a convenience class.'''
 
     def __init__(self, name=None, value=None):
         options = [value]
@@ -66,7 +72,9 @@ class Fixed(Input):
 
 
 class Switch(Input):
-    ''' '''
+    '''This class allows the user to specify two options where only one is
+    valid at a time. It could be considered to be a special case of
+    Choice, but it is so common that a separate class makes sense.'''
 
     def __init__(self, name=None, off=None, on=None):
         options = []
@@ -82,7 +90,10 @@ class Switch(Input):
 
 
 class Choice(Input):
-    ''' '''
+    '''This class allows the user to specify an unlimited number of
+    options, where only one option is valid at a time.
+
+    '''
 
     def __init__(self, name=None, pre=None, inputs=None):
         options = []
@@ -95,9 +106,12 @@ class Choice(Input):
 
 
 class Range(Input):
-    ''' '''
+    '''This class is a base class for different types. It supports the
+    concept of an input having a range of values (from low to high with a
+    step)'''
 
-    def __init__(self, name=None, low=None, high=None, step=None, options=None):
+    def __init__(self, name=None, low=None, high=None, step=None,
+                 options=None):
         self._low = low
         self._high = high
         self._step = step
@@ -105,7 +119,9 @@ class Range(Input):
 
 
 class IntRange(Range):
-    ''' '''
+    '''This class implements the integer version of the Range class,
+    allowing a set of integer inputs to be defined by a low, high and
+    step.'''
 
     def __init__(self, name=None, low=None, high=None, step=None):
         options = [i for i in range(low, high, step)]
@@ -114,7 +130,9 @@ class IntRange(Range):
 
 
 class FloatRange(Range):
-    ''' '''
+    '''This class implements the float version of the Range class,
+    allowing a set of float inputs to be defined by a low, high and
+    step.'''
 
     def __init__(self, name=None, low=None, high=None, step=None):
         from numpy import arange
@@ -124,7 +142,9 @@ class FloatRange(Range):
 
 
 class Subsets(Input):
-    ''' '''
+    '''This class allows all combinations of a particular set of values to
+    be chosen, including, no values, individual values, pairs of values,
+    triplets of values etc.'''
 
     def __init__(self, name=None, inputs=None):
         self._inputs = inputs
@@ -134,8 +154,8 @@ class Subsets(Input):
         Input.__init__(self, name, self._options)
 
     def _recurse(self, inputs, output, depth, max_depth):
-        ''' '''
-        if depth<max_depth:
+        '''We work out all combinations using this internal recursion method'''
+        if depth < max_depth:
             for index in range(len(inputs)):
                 option = inputs[index]
                 my_output = list(output)
@@ -145,7 +165,7 @@ class Subsets(Input):
             self._options.append(output)
 
 
-def create_input(option, template_name, template_location = "template"):
+def create_input(option, template_name, template_location="template"):
 
     '''create an input file using jinja2 by filling a template
     with the values from the option variable passed in.'''
@@ -157,10 +177,10 @@ def create_input(option, template_name, template_location = "template"):
 
     # load the template and fill it with the option variable contents
     import jinja2
-    templateLoader = jinja2.FileSystemLoader( searchpath=template_location )
-    templateEnv = jinja2.Environment( loader=templateLoader )
-    template = templateEnv.get_template( template_name )
-    outputText = template.render( jinja2_input )
+    template_loader = jinja2.FileSystemLoader(searchpath=template_location)
+    template_env = jinja2.Environment(loader=template_loader)
+    template = template_env.get_template(template_name)
+    output_text = template.render(jinja2_input)
 
     # return the particular input file as a string
-    return outputText
+    return output_text

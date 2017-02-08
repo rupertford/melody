@@ -39,7 +39,8 @@ from melody.inputs import Switch, Choice, IntRange, FloatRange, Subsets
 from melody.search import BruteForce
 from melody.main import Melody
 
-def test_function(option):
+
+def test_function(_):
     '''A dummy test function. The function takes a list of inputs as an
     argument and returns whether the execution was successful (in our
     case we always return True) followed by the target output (in our
