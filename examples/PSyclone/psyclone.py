@@ -84,7 +84,7 @@ class ModuleInline(Subsets):
     '''A specialisation of the melody Subsets input class providing all
     possible combinations of module inlining for the particular code.'''
 
-    def __init__(self, psy=None):
+    def __init__(self, psy):
         self._psy = psy
         # get the kernels that can be inlined from PSyclone
         kernels = []
@@ -136,10 +136,10 @@ class GOLoopFuse(object):
         invokes = my_psy.invokes.invoke_list
         #print "there are {0} invokes".format(len(invokes))
         if self._dependent_invokes:
-            print ("dependent invokes assumes fusion in one invoke might "
-                   "affect fusion in another invoke. This is not yet "
-                   "implemented")
-            exit(1)
+            raise RuntimeError(
+                "dependent invokes assumes fusion in one invoke might "
+                "affect fusion in another invoke. This is not yet "
+                "implemented")
         else:
             # treat each invoke separately
             for idx, invoke in enumerate(invokes):
@@ -157,20 +157,17 @@ class GOLoopFuse(object):
 
     @property
     def name(self):
-        '''Returns the name of the melody input class '''
+        '''Returns the name of the melody input class'''
         return self._name
 
-#FILE = "/home/rupert/proj/GungHo/PSyclone_trunk/examples/gocean/
-#shallow_alg.f90"
-FILE = ("/home/rupert/proj/GungHoSVN/PSyclone_trunk/examples/"
-        "gocean/shallow_alg.f90")
+FILE = ("shallow/shallow_alg.f90")
 _, INVOKE_INFO = parse(FILE, api="gocean1.0")
 PSY = PSyFactory("gocean1.0").create(INVOKE_INFO)
 
 # TBD   ArrayBounds(),
 INPUTS = [
     GOLoopFuse(),
-    ModuleInline(psy=PSY),
+    ModuleInline(PSY),
     Choice(name="Problem Size", inputs=["64", "128", "256", "512", "1024"])]
 
 MELODY = Melody(inputs=INPUTS, function=test_function, state=PSY,

@@ -39,14 +39,14 @@ specialised for particular scenarios.'''
 class Input(object):
     '''This is the base class for all types of input class.'''
 
-    def __init__(self, name, options, state=False):
+    def __init__(self, name, options, state=None):
         self._state = state
         self._name = name
         self._options = options
 
     @property
     def state(self):
-        '''Returns the state variable. This is False by default.'''
+        '''Returns the state variable. This is 'None' by default.'''
         return self._state
 
     @property
@@ -154,7 +154,7 @@ class Subsets(Input):
         Input.__init__(self, name, self._options)
 
     def _recurse(self, inputs, output, depth, max_depth):
-        '''We work out all combinations using this internal recursion class'''
+        '''We work out all combinations using this internal recursion method'''
         if depth < max_depth:
             for index in range(len(inputs)):
                 option = inputs[index]

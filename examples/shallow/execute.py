@@ -60,7 +60,7 @@ def execute(option):
     makefile_include = create_input(makefile_option, "Makefile.include",
                                     template_location="templates")
 
-    benchmark_base = "/home/rupert/proj/GOcean/shallow_benchmark"
+    benchmark_base = "shallow"
 
     # save the input files in the appropriate place
     location = benchmark_base + "/original/namelist"
@@ -74,9 +74,7 @@ def execute(option):
     my_file.flush()
 
     # compile shallow if required
-    #import os
-    #os.chdir("/home/rupert/proj/GOcean/shallow_benchmark/original")
-    base_path = "/home/rupert/proj/GOcean/shallow_benchmark/original"
+    base_path = benchmark_base + "/original"
     import subprocess
     make_process = subprocess.Popen(["make", "clean"], cwd=base_path,
                                     stderr=subprocess.PIPE,
