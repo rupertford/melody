@@ -79,5 +79,5 @@ if __name__ == '__main__':
         classifiers=CLASSIFIERS,
         packages=PACKAGES,
         package_dir={"": "src"},
-        install_requires=['fparser'])
+        install_requires=['jinja2'])
 
