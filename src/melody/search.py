@@ -44,6 +44,9 @@ class SearchMethod(object):
         self._inputs = inputs
         self._state = state
 
+    def run(self):
+        raise NotImplementedError("Run method should be implemented")
+        
     @property
     def function(self):
         '''Return the function associated with this instance of search
