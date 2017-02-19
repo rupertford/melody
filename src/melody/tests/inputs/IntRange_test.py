@@ -36,13 +36,15 @@
 import pytest
 from melody.inputs import IntRange
 
+
 @pytest.mark.xfail(reason="bug : (low, high, step)==None causes TypeError")
 def test_intrange_class_vanilla():
     '''check that initial values are set appropriately if they are not
     provided'''
     int_range = IntRange()
     assert len(int_range.options) == 0
-    assert int_range.name == None
+    assert int_range.name is None
+
 
 def test_intrange_class_value_inputs():
     '''check that the IntRange class returns the specified inputs'''
@@ -52,8 +54,9 @@ def test_intrange_class_value_inputs():
     expected = [i for i in range(low, high, step)]
     int_range = IntRange(low=low, high=high, step=step)
     assert len(int_range.options) == len(expected)
-    for idx, value in enumerate(expected):
+    for idx, _ in enumerate(expected):
         assert int_range.options[idx] == expected[idx]
+
 
 @pytest.mark.xfail(reason="bug : (low, high, step)==None causes TypeError")
 def test_intrange_class_name():

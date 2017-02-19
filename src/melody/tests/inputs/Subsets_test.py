@@ -36,13 +36,15 @@
 import pytest
 from melody.inputs import Subsets
 
+
 @pytest.mark.xfail(reason="bug : inputs==None causes TypeError")
 def test_subsets_class_vanilla():
     '''check that initial values are set appropriately if they are not
     provided'''
     subsets = Subsets()
     assert len(subsets.options) == 0
-    assert subsets.name == None
+    assert subsets.name is None
+
 
 def test_subsets_class_value_inputs():
     '''check that the Subsets class returns the expected inputs'''
@@ -53,6 +55,7 @@ def test_subsets_class_value_inputs():
     assert len(subsets.options) == len(expected_values)
     for value in expected_values:
         assert value in subsets.options
+
 
 @pytest.mark.xfail(reason="bug : inputs==None causes TypeError")
 def test_subsets_class_name():

@@ -33,8 +33,8 @@
 #
 '''pytest tests for the Input base class in the inputs.py melody file'''
 
-import pytest
 from melody.inputs import Input
+
 
 def test_input_class_vanilla():
     '''check that the required name and options arguments are stored
@@ -44,7 +44,8 @@ def test_input_class_vanilla():
     my_input = Input(test_name, test_options)
     assert my_input.options == test_options
     assert my_input.name == test_name
-    assert my_input.state == None
+    assert my_input.state is None
+
 
 def test_input_class_state():
     '''check that the value of state is set to the provided value'''

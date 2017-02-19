@@ -33,16 +33,17 @@
 #
 '''pytest tests for the Fixed class in the inputs.py melody file'''
 
-import pytest
 from melody.inputs import Fixed
+
 
 def test_fixed_class_vanilla():
     '''check that initial values are set to None if they are not
     provided'''
     fixed = Fixed()
     assert len(fixed.options) == 1
-    assert fixed.options[0] == None
-    assert fixed.name == None
+    assert fixed.options[0] is None
+    assert fixed.name is None
+
 
 def test_fixed_class_value():
     '''check that the Fixed class returns the specified value'''
@@ -50,6 +51,7 @@ def test_fixed_class_value():
     fixed = Fixed(value=test_value)
     assert len(fixed.options) == 1
     assert fixed.options[0] == test_value
+
 
 def test_fixed_class_name():
     '''check that the fixed class returns the specified name'''

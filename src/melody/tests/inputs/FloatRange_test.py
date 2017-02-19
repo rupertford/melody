@@ -36,13 +36,15 @@
 import pytest
 from melody.inputs import FloatRange
 
+
 @pytest.mark.xfail(reason="bug : (low, high, step)==None causes TypeError")
 def test_floatrange_class_vanilla():
     '''check that initial values are set appropriately if they are not
     provided'''
     float_range = FloatRange()
     assert len(float_range.options) == 0
-    assert float_range.name == None
+    assert float_range.name is None
+
 
 def test_floatrange_class_value_inputs():
     '''check that the FloatRange class returns the specified inputs'''
@@ -53,8 +55,9 @@ def test_floatrange_class_value_inputs():
     expected = [i for i in arange(low, high, step)]
     float_range = FloatRange(low=low, high=high, step=step)
     assert len(float_range.options) == len(expected)
-    for idx, value in enumerate(expected):
+    for idx, _ in enumerate(expected):
         assert float_range.options[idx] == expected[idx]
+
 
 @pytest.mark.xfail(reason="bug : (low, high, step)==None causes TypeError")
 def test_floatrange_class_name():

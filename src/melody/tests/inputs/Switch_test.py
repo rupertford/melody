@@ -33,8 +33,8 @@
 #
 '''pytest tests for the Name class in the inputs.py melody file'''
 
-import pytest
 from melody.inputs import Switch
+
 
 def test_switch_class_vanilla():
     '''check that initial values are set appropriately if they are not
@@ -43,7 +43,8 @@ def test_switch_class_vanilla():
     assert len(switch.options) == 2
     assert switch.options[0] == ""
     assert switch.options[1] == ""
-    assert switch.name == None
+    assert switch.name is None
+
 
 def test_switch_class_value_off():
     '''check that the Switch class returns the specified value for off'''
@@ -53,6 +54,7 @@ def test_switch_class_value_off():
     assert switch.options[0] == test_value
     assert switch.options[1] == ""
 
+
 def test_switch_class_value_on():
     '''check that the Switch class returns the specified value for on'''
     test_value = "test"
@@ -60,6 +62,7 @@ def test_switch_class_value_on():
     assert len(switch.options) == 2
     assert switch.options[0] == ""
     assert switch.options[1] == test_value
+
 
 def test_switch_class_value_offon():
     '''check that the Switch class returns the specified values for off and
@@ -70,6 +73,7 @@ def test_switch_class_value_offon():
     assert len(switch.options) == 2
     assert switch.options[0] == test_off_value
     assert switch.options[1] == test_on_value
+
 
 def test_switch_class_name():
     '''check that the switch class returns the specified name'''
