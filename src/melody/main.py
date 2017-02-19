@@ -57,7 +57,7 @@ class Melody(object):
     @property
     def method(self):
         '''Return the optimisation/search method associated with this instance
-of melody'''
+        of melody'''
         return self._method
 
     @method.setter
