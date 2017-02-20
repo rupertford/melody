@@ -31,56 +31,30 @@
 #
 # Author R. Ford STFC Daresbury Lab.
 #
-'''melody is a simple generic tuning library primarily designed for
-the optimisation of software on hpc architectures'''
+'''pytest tests for the Fixed class in the inputs.py melody file'''
+
+from melody.inputs import Fixed
 
 
-class Melody(object):
-    ''' The main class '''
+def test_fixed_class_vanilla():
+    '''check that initial values are set to None if they are not
+    provided'''
+    fixed = Fixed()
+    assert len(fixed.options) == 1
+    assert fixed.options[0] is None
+    assert fixed.name is None
 
-    def __init__(self, function=None, method=None, state=None, inputs=None):
-        self._function = function
-        self._method = method
-        self._state = state
-        self._inputs = inputs
 
-    @property
-    def function(self):
-        '''Return the function associated with this instance of melody'''
-        return self._function
+def test_fixed_class_value():
+    '''check that the Fixed class returns the specified value'''
+    test_value = "test"
+    fixed = Fixed(value=test_value)
+    assert len(fixed.options) == 1
+    assert fixed.options[0] == test_value
 
-    @function.setter
-    def function(self, function):
-        '''Set the function associated with this instance of melody'''
-        self._function = function
 
-    @property
-    def method(self):
-        '''Return the optimisation/search method associated with this instance
-        of melody'''
-        return self._method
-
-    @method.setter
-    def method(self, method):
-        '''Set the optimisation/search method associated with this instance of
-melody'''
-        self._method = method
-
-    @property
-    def inputs(self):
-        '''Return the input search parameters for the associated function'''
-        return self._inputs
-
-    @inputs.setter
-    def inputs(self, inputs):
-        '''Set the input search parameters for the associated function'''
-        self._inputs = inputs
-
-    def search(self):
-        '''Start the optimisation/search using the supplied optimisation
-        method with the supplied inputs for the supplied function'''
-        search = self._method()
-        search.inputs = self._inputs
-        search.function = self._function
-        search.state = self._state
-        search.run()
+def test_fixed_class_name():
+    '''check that the fixed class returns the specified name'''
+    test_name = "wife"
+    fixed = Fixed(name=test_name)
+    assert fixed.name == test_name
