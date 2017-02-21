@@ -66,7 +66,7 @@ class Fixed(Input):
     '''This class simply returns a single fixed value. It therefore does
     not add to the search space. Rather it is a convenience class.'''
 
-    def __init__(self, name=None, value=None):
+    def __init__(self, name, value):
         options = [value]
         Input.__init__(self, name, options)
 
@@ -76,7 +76,10 @@ class Switch(Input):
     valid at a time. It could be considered to be a special case of
     Choice, but it is so common that a separate class makes sense.'''
 
-    def __init__(self, name=None, off=None, on=None):
+    def __init__(self, name, off=None, on=None):
+        if not off and not on:
+            raise RuntimeError(
+                "A value must be provided for at least one of 'off' or 'on'")
         options = []
         if off:
             options.append(off)
@@ -95,7 +98,7 @@ class Choice(Input):
 
     '''
 
-    def __init__(self, name=None, pre=None, inputs=None):
+    def __init__(self, name, inputs, pre=None):
         options = []
         for value in inputs:
             if pre:
