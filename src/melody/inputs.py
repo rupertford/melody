@@ -108,40 +108,24 @@ class Choice(Input):
         Input.__init__(self, name, options)
 
 
-class Range(Input):
-    '''This class is a base class for different types. It supports the
-    concept of an input having a range of values (from low to high with a
-    step)'''
-
-    def __init__(self, name=None, low=None, high=None, step=None,
-                 options=None):
-        self._low = low
-        self._high = high
-        self._step = step
-        Input.__init__(self, name, options)
-
-
-class IntRange(Range):
+class IntRange(Input):
     '''This class implements the integer version of the Range class,
     allowing a set of integer inputs to be defined by a low, high and
     step.'''
 
-    def __init__(self, name=None, low=None, high=None, step=None):
+    def __init__(self, name, low, high, step):
         options = [i for i in range(low, high, step)]
-        Range.__init__(self, name=name, low=low, high=high, step=step,
-                       options=options)
+        Input.__init__(self, name, options)
 
 
-class FloatRange(Range):
-    '''This class implements the float version of the Range class,
-    allowing a set of float inputs to be defined by a low, high and
-    step.'''
+class FloatRange(Input):
+    '''This class implements a range of floating point values,
+    which are set by low, high and step values.'''
 
-    def __init__(self, name=None, low=None, high=None, step=None):
+    def __init__(self, name, low, high, step):
         from numpy import arange
         options = [f for f in arange(low, high, step)]
-        Range.__init__(self, name=name, low=low, high=high, step=step,
-                       options=options)
+        Input.__init__(self, name, options)
 
 
 class Subsets(Input):
