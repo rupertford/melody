@@ -102,7 +102,7 @@ class Choice(Input):
         options = []
         for value in inputs:
             if pre:
-                options.append(pre+value)
+                options.append(pre + value)
             else:
                 options.append(value)
         Input.__init__(self, name, options)
@@ -152,7 +152,7 @@ class Subsets(Input):
     def __init__(self, name=None, inputs=None):
         self._inputs = inputs
         self._options = []
-        for k in range(len(inputs)+1):
+        for k in range(len(inputs) + 1):
             self._recurse(inputs, [], depth=0, max_depth=k)
         Input.__init__(self, name, self._options)
 
@@ -163,7 +163,8 @@ class Subsets(Input):
                 option = inputs[index]
                 my_output = list(output)
                 my_output.append(option)
-                self._recurse(inputs[index+1:], my_output, depth+1, max_depth)
+                self._recurse(inputs[index + 1:], my_output, depth+1,
+                              max_depth)
         else:
             self._options.append(output)
 
