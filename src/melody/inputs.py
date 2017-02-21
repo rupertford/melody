@@ -163,7 +163,7 @@ class Subsets(Input):
                 option = inputs[index]
                 my_output = list(output)
                 my_output.append(option)
-                self._recurse(inputs[index + 1:], my_output, depth+1,
+                self._recurse(inputs[index + 1:], my_output, depth + 1,
                               max_depth)
         else:
             self._options.append(output)
