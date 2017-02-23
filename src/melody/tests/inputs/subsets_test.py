@@ -37,29 +37,14 @@ import pytest
 from melody.inputs import Subsets
 
 
-@pytest.mark.xfail(reason="bug : inputs==None causes TypeError")
 def test_subsets_class_vanilla():
-    '''check that initial values are set appropriately if they are not
-    provided'''
-    subsets = Subsets()
-    assert len(subsets.options) == 0
-    assert subsets.name is None
-
-
-def test_subsets_class_value_inputs():
     '''check that the Subsets class returns the expected inputs'''
+    test_name = "subsets"
     test_values = ["a", "b", "c"]
     expected_values = [[], ["a"], ["b"], ["c"], ["a", "b"],
                        ["a", "c"], ["b", "c"], ["a", "b", "c"]]
-    subsets = Subsets(inputs=test_values)
+    subsets = Subsets(name=test_name, inputs=test_values)
     assert len(subsets.options) == len(expected_values)
     for value in expected_values:
         assert value in subsets.options
-
-
-@pytest.mark.xfail(reason="bug : inputs==None causes TypeError")
-def test_subsets_class_name():
-    '''check that the subsets class returns the specified name'''
-    test_name = "dad"
-    subsets = Subsets(name=test_name)
     assert subsets.name == test_name

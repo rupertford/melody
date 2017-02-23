@@ -133,7 +133,7 @@ class Subsets(Input):
     be chosen, including, no values, individual values, pairs of values,
     triplets of values etc.'''
 
-    def __init__(self, name=None, inputs=None):
+    def __init__(self, name, inputs):
         self._inputs = inputs
         self._options = []
         for k in range(len(inputs) + 1):
@@ -161,14 +161,21 @@ def create_input(option, template_name, template_location="template"):
     # restructure option list into jinja2 input format
     jinja2_input = {}
     for item in option:
-        jinja2_input.update(item)
+        try:
+            jinja2_input.update(item)
+        except ValueError:
+            raise RuntimeError(
+                ("inputs.py, create_input : format of item '{0}' is not "
+                 "supported. Expecting a dictionary.".format(str(item))))
 
     # load the template and fill it with the option variable contents
     import jinja2
-    template_loader = jinja2.FileSystemLoader(searchpath=template_location)
-    template_env = jinja2.Environment(loader=template_loader)
-    template = template_env.get_template(template_name)
-    output_text = template.render(jinja2_input)
-
+    try:
+        template_loader = jinja2.FileSystemLoader(searchpath=template_location)
+        template_env = jinja2.Environment(loader=template_loader)
+        template = template_env.get_template(template_name)
+        output_text = template.render(jinja2_input)
+    except jinja2.TemplateNotFound:
+        raise RuntimeError("template '{0}' not found".format(template_name))
     # return the particular input file as a string
     return output_text
