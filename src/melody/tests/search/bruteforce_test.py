@@ -37,15 +37,6 @@ import pytest
 from melody.search import BruteForce
 
 
-def test_bruteforce_vanilla():
-    '''check that initial values are set to None if they are not
-    provided'''
-    search_method = BruteForce()
-    assert search_method.function is None
-    assert search_method.inputs is None
-    assert search_method.state is None
-
-
 def test_bruteforce_run(capsys):
     '''check that bruteforce runs when we provide a valid set of inputs'''
     from melody.inputs import Choice
@@ -82,31 +73,21 @@ def test_bruteforce_state_run(capsys, monkeypatch):
     assert "[{'c': 'c2'}] 0 [{'c': 'c2'}]" in out
 
 
-@pytest.mark.xfail(reason=("bug : exception should be raised if no input "
-                           "is provided"))
-def test_bruteforce_no_input():
-    '''check that an appropriate exception is raised if no input options
-    are provided'''
-    def function(input_var):
-        '''test function'''
-        return 0, input_var
-    search_method = BruteForce(function=function)
-    search_method.run()
-    assert False
 
-
-@pytest.mark.xfail(reason=("bug : exception should be raised if inputs "
-                           "is not a list"))
-def test_bruteforce_inputs_not_list():
+###@pytest.mark.xfail(reason=("bug : exception should be raised if inputs "
+###                           "is not a list"))
+def test_bruteforce_inputs_not_iterable():
     '''
-    check that an exception is raised if the inputs type is not a list
+    check that an exception is raised if the inputs type is not a iterable
     '''
     def function(input_var):
         '''test function'''
         return 0, input_var
-    inputs = "hello"
+    inputs = 7
     search_method = BruteForce(function=function, inputs=inputs)
-    search_method.run()
+    with pytest.raises(RuntimeError) as excinfo:
+        search_method.run()
+    assert "input should be iterable" in str(excinfo.value)
 
 
 @pytest.mark.xfail(reason=("bug : exception should be raised if inputs "

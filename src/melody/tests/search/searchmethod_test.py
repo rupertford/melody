@@ -38,44 +38,47 @@ from melody.search import SearchMethod
 
 
 def test_searchmethod_vanilla():
-    '''check that initial values are set to None if they are not
-    provided'''
-    search_method = SearchMethod()
-    assert search_method.function is None
-    assert search_method.inputs is None
+    '''check that initial required values are stored appropriately if they
+    are provided when the class is initialised and that optional
+    values are set to None'''
+    inputs = "green"
+    function = "hello"
+    search_method = SearchMethod(inputs=inputs, function=function)
+    assert search_method.inputs is inputs
+    assert search_method.function is function
     assert search_method.state is None
 
 
-def test_searchmethod_initial_values():
-    '''check that initial values are stored appropriately if they are
+def test_searchmethod_init_state():
+    '''check that state is stored appropriately if it is
     provided when the class is initialised'''
     function = "hello"
     inputs = "green"
     state = "envy"
-    search_method = SearchMethod(function=function, inputs=inputs, state=state)
-    assert search_method.function is function
+    search_method = SearchMethod(inputs=inputs, function=function, state=state)
     assert search_method.inputs is inputs
+    assert search_method.function is function
     assert search_method.state is state
 
 
-def test_searchmethod_set_values():
-    '''check that values that are set are stored appropriately'''
-    function = "hello"
+def test_searchmethod_set_state():
+    '''check that state is stored appropriately if it is set '''
     inputs = "green"
+    function = "hello"
     state = "envy"
-    search_method = SearchMethod()
-    search_method.function = function
-    search_method.inputs = inputs
+    search_method = SearchMethod(inputs, function)
     search_method.state = state
-    assert search_method.function is function
     assert search_method.inputs is inputs
+    assert search_method.function is function
     assert search_method.state is state
 
 
 def test_searchmethod_run_method():
     '''check that a notimplemented exception is raised if the run method
     is called'''
-    search_method = SearchMethod()
+    inputs = "green"
+    function = "hello"
+    search_method = SearchMethod(inputs, function)
     with pytest.raises(NotImplementedError) as excinfo:
         search_method.run()
     assert "Run method should be implemented" in str(excinfo.value)

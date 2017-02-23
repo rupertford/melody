@@ -39,9 +39,9 @@ base class'''
 class SearchMethod(object):
     '''A utility baseclass for different search/optimisation methods'''
 
-    def __init__(self, function=None, inputs=None, state=None):
-        self._function = function
+    def __init__(self, inputs, function, state=None):
         self._inputs = inputs
+        self._function = function
         self._state = state
 
     def run(self):
@@ -54,22 +54,11 @@ class SearchMethod(object):
         method'''
         return self._function
 
-    @function.setter
-    def function(self, function):
-        '''Set the function associated with this instance of search method'''
-        self._function = function
-
     @property
     def inputs(self):
         '''Return the input search parameters for this instance of search
         method'''
         return self._inputs
-
-    @inputs.setter
-    def inputs(self, inputs):
-        '''Set the input search parameters for this instance of search
-        method'''
-        self._inputs = inputs
 
     @property
     def state(self):
@@ -85,9 +74,8 @@ class SearchMethod(object):
 class BruteForce(SearchMethod):
     '''A search method that tests all input options'''
 
-    def __init__(self, function=None, inputs=None, state=None):
-        SearchMethod.__init__(self, function=function, inputs=inputs,
-                              state=state)
+    def __init__(self, inputs, function, state=None):
+        SearchMethod.__init__(self, inputs, function, state=state)
 
     def run(self):
         ''' perform the search over inputs'''
@@ -97,8 +85,11 @@ class BruteForce(SearchMethod):
         '''internal recursion routine called by the run method that generates
         all input combinations'''
         if inputs:
-            my_input = inputs[0]
-            name = my_input.name
+            try:
+                my_input = inputs[0]
+                name = my_input.name
+            except TypeError:
+                raise RuntimeError("input should be iterable but found type='{0}', value='{1}'".format(type(inputs), inputs))
             if my_input.state:
                 my_options = my_input.options(self.state)
             else:
