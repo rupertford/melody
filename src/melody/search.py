@@ -40,9 +40,39 @@ class SearchMethod(object):
     '''A utility baseclass for different search/optimisation methods'''
 
     def __init__(self, inputs, function, state=None):
+        self._check_inputs(inputs)
+        self._check_function(function)
         self._inputs = inputs
         self._function = function
         self._state = state
+
+    def _check_inputs(self,inputs):
+        ''' make some basic checks on the inputs to make sure they are valid'''
+        try:
+            _ = inputs[0]
+        except TypeError:
+            raise RuntimeError("inputs should be iterable but found type='{0}', value='{1}'".format(type(inputs), str(inputs)))
+        from inputs import Input
+        for check_input in inputs:
+            if not isinstance(check_input, Input):
+                raise RuntimeError("input should be a subclass of the Input class but found type='{0}', value='{1}'".format(type(check_input), str(check_input)))
+
+    def _check_function(self, function):
+        ''' make some basic checks on the function to make sure it is valid'''
+        # callable is valid for Python 2 and Python 3.2 onwards but
+        # not inbetween
+        if not callable(function):
+            raise RuntimeError("provided function '{0}' is not callable".format(str(function)))
+        # getfullargspec is a Python 2 specific solution. If we want to use
+        # Python 3 we need to use the signature class
+        from inspect import getargspec
+        arg_info = getargspec(function)
+        if len(arg_info.args) != 1:
+            print str(arg_info)
+            raise RuntimeError("provided function should have one argument but found {0}".format(len(arg_info.args)))
+        # I don't think I can statically determine how many arguments
+        # a function returns so we will have to check as the function
+        # actually returns
 
     def run(self):
         '''Ensure that any subclass implements this method'''
@@ -85,11 +115,8 @@ class BruteForce(SearchMethod):
         '''internal recursion routine called by the run method that generates
         all input combinations'''
         if inputs:
-            try:
-                my_input = inputs[0]
-                name = my_input.name
-            except TypeError:
-                raise RuntimeError("input should be iterable but found type='{0}', value='{1}'".format(type(inputs), inputs))
+            my_input = inputs[0]
+            name = my_input.name
             if my_input.state:
                 my_options = my_input.options(self.state)
             else:
