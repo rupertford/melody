@@ -64,14 +64,12 @@ class SearchMethod(object):
 
     def _check_function(self):
         ''' make some basic checks on the function to make sure it is valid'''
-        # callable is valid for Python 2 and Python 3.2 onwards but
+        # note, callable is valid for Python 2 and Python 3.2 onwards but
         # not inbetween
         if not callable(self._function):
             raise RuntimeError(
                 "provided function '{0}' is not callable".
                 format(str(self._function)))
-        # getfullargspec is a Python 2 specific solution. If we want to use
-        # Python 3 we need to use the signature class
         from inspect import getargspec
         arg_info = getargspec(self._function)
         if len(arg_info.args) != 1:
@@ -80,8 +78,8 @@ class SearchMethod(object):
                 "provided function should have one argument but found "
                 "{0}".format(len(arg_info.args)))
         # I don't think I can statically determine how many arguments
-        # a function returns so we will have to check as the function
-        # actually returns
+        # a function will return so will have to check after calling
+        # the function
 
     def run(self):
         '''Ensure that any subclass implements this method'''
@@ -101,12 +99,12 @@ class SearchMethod(object):
 
     @property
     def state(self):
-        '''Return the xxx for this instance of search method'''
+        '''Return the state for this instance of search method'''
         return self._state
 
     @state.setter
     def state(self, state):
-        '''Set the xxx for this instance of search method'''
+        '''Set the state for this instance of search method'''
         self._state = state
 
 
