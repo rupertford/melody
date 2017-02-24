@@ -143,8 +143,7 @@ class Subsets(Input):
     def _recurse(self, inputs, output, depth, max_depth):
         '''We work out all combinations using this internal recursion method'''
         if depth < max_depth:
-            for index in range(len(inputs)):
-                option = inputs[index]
+            for index, option in enumerate(inputs):
                 my_output = list(output)
                 my_output.append(option)
                 self._recurse(inputs[index + 1:], my_output, depth + 1,

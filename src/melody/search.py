@@ -135,5 +135,8 @@ class BruteForce(SearchMethod):
                 my_output.append({name: option})
                 self._recurse(inputs[1:], my_output)
         else:
-            valid, result = self._function(output)
+            try:
+                valid, result = self._function(output)
+            except ValueError:
+                raise RuntimeError("function must return 2 values")
             print output, valid, result

@@ -73,8 +73,6 @@ def test_state_run(capsys, monkeypatch):
     assert "[{'c': 'c2'}] 0 [{'c': 'c2'}]" in out
 
 
-@pytest.mark.xfail(reason=("bug : appropriate exception should be raised "
-                           "if the function returns too few arguments"))
 def test_func_too_few_ret_args():
     '''check that an exception is raised if too few function return
     arguments are provided'''
@@ -85,11 +83,11 @@ def test_func_too_few_ret_args():
         '''test function'''
         return inputs
     search_method = BruteForce(inputs, function)
-    search_method.run()
+    with pytest.raises(RuntimeError) as excinfo:
+        search_method.run()
+    assert "function must return 2 values" in str(excinfo.value)
 
 
-@pytest.mark.xfail(reason=("bug : appropriate exception should be raised "
-                           "if the function returns too many arguments"))
 def test_func_too_many_ret_args():
     '''check that an exception is raised if too many function return
     arguments are provided'''
@@ -100,4 +98,6 @@ def test_func_too_many_ret_args():
         '''test function'''
         return inputs, 0, 0
     search_method = BruteForce(inputs=inputs, function=function)
-    search_method.run()
+    with pytest.raises(RuntimeError) as excinfo:
+        search_method.run()
+    assert "function must return 2 values" in str(excinfo.value)
