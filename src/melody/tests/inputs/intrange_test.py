@@ -33,7 +33,6 @@
 #
 '''pytest tests for the IntRange class in the inputs.py melody file'''
 
-import pytest
 from melody.inputs import IntRange
 
 

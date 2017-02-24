@@ -37,7 +37,7 @@ import pytest
 from melody.search import BruteForce
 
 
-def test_bruteforce_run(capsys):
+def test_run(capsys):
     '''check that bruteforce runs when we provide a valid set of inputs'''
     from melody.inputs import Choice
     inputs = [Choice(name="c",
@@ -54,7 +54,7 @@ def test_bruteforce_run(capsys):
 
 
 @pytest.mark.xfail(reason=("bug : state support is work in progress"))
-def test_bruteforce_state_run(capsys, monkeypatch):
+def test_state_run(capsys, monkeypatch):
     '''check that bruteforce runs when we provide a valid set of inputs
     with state'''
     from melody.inputs import Choice
@@ -75,23 +75,29 @@ def test_bruteforce_state_run(capsys, monkeypatch):
 
 @pytest.mark.xfail(reason=("bug : appropriate exception should be raised "
                            "if the function returns too few arguments"))
-def test_bruteforce_function_too_few_return_args():
+def test_func_too_few_ret_args():
     '''check that an exception is raised if too few function return
     arguments are provided'''
+    from melody.inputs import Choice
+    choice = Choice(name="c", inputs=["c1", "c2"])
+    inputs = [choice]
     def function(inputs):
         '''test function'''
         return inputs
-    search_method = BruteForce(function=function)
+    search_method = BruteForce(inputs, function)
     search_method.run()
 
 
 @pytest.mark.xfail(reason=("bug : appropriate exception should be raised "
                            "if the function returns too many arguments"))
-def test_bruteforce_function_too_many_return_args():
+def test_func_too_many_ret_args():
     '''check that an exception is raised if too many function return
     arguments are provided'''
+    from melody.inputs import Choice
+    choice = Choice(name="c", inputs=["c1", "c2"])
+    inputs = [choice]
     def function(inputs):
         '''test function'''
         return inputs, 0, 0
-    search_method = BruteForce(function=function)
+    search_method = BruteForce(inputs=inputs, function=function)
     search_method.run()

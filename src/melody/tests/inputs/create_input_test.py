@@ -71,7 +71,7 @@ def test_non_existant_template():
     assert "template '"+template_name+"' not found" in str(excinfo.value)
 
 
-def test_non_existant_template_directory():
+def test_missing_template_dir():
     '''test that we raise an exception if the specified template location
     does not exist'''
     template_dir = os.path.join(SCRIPT_DIR, "invalid")
