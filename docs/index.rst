@@ -13,7 +13,8 @@ Melody is a lightweight ...
    :caption: Contents:
 
    installation
-.. running
+   running
+
 .. inputs
 ..   extending
 .. function

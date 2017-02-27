@@ -16,8 +16,13 @@ or clone the repository ...
  
    $ git clone https://github.com/rupertford/melody.git
 
-Installing
-++++++++++
+Python version
+++++++++++++++
+
+Melody is currently tested on Python 2.7.
+
+Installation
+++++++++++++
 
 Using setup.py
 --------------
@@ -36,9 +41,9 @@ installation instead
    $ cd <melody_dir>
    $ python setup.py install --user
 
-If you would like to uninstall melody after installing using the setup.py
-script you can do so using pip. You may see a number of error messages but
-the installation should be succesful.
+If you would like to uninstall melody (after installing using the setup.py
+script) you can do so using pip. You may see a number of error messages but
+the installation should complete succesfully.
 ::
 
    $ pip uninstall melody
@@ -46,8 +51,8 @@ the installation should be succesful.
 Local pip install
 -----------------
 
-Relies on you not moving or modifying the downloaded source code.
-Editable pip install. In the top level directory type:
+This installation relies on you not moving or modifying the downloaded
+source code. In the top level directory type:
 ::
    
    $ cd <melody_dir>
@@ -56,7 +61,9 @@ Editable pip install. In the top level directory type:
 Manual setup
 ------------
 
-This solution relies on you not moving or modifying the downloaded source code.
+This solution also relies on you not moving or modifying the
+downloaded source code. In this case you simply set your python path
+appropriately.
 ::
    
    $ export PYTHONPATH=<melody_dir>/src
