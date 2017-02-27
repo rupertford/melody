@@ -39,10 +39,47 @@ base class'''
 class SearchMethod(object):
     '''A utility baseclass for different search/optimisation methods'''
 
-    def __init__(self, function=None, inputs=None, state=None):
-        self._function = function
+    def __init__(self, inputs, function, state=None):
         self._inputs = inputs
+        self._check_inputs()
+        self._function = function
+        self._check_function()
         self._state = state
+
+    def _check_inputs(self):
+        ''' make some basic checks on the inputs to make sure they are valid'''
+        try:
+            _ = self._inputs[0]
+        except TypeError:
+            raise RuntimeError(
+                "inputs should be iterable but found type='{0}', value="
+                "'{1}'".format(type(self._inputs), str(self._inputs)))
+        from melody.inputs import Input
+        for check_input in self._inputs:
+            if not isinstance(check_input, Input):
+                raise RuntimeError(
+                    "input should be a subclass of the Input class but "
+                    "found type='{0}', value='{1}'".format(type(check_input),
+                                                           str(check_input)))
+
+    def _check_function(self):
+        ''' make some basic checks on the function to make sure it is valid'''
+        # note, callable is valid for Python 2 and Python 3.2 onwards but
+        # not inbetween
+        if not callable(self._function):
+            raise RuntimeError(
+                "provided function '{0}' is not callable".
+                format(str(self._function)))
+        from inspect import getargspec
+        arg_info = getargspec(self._function)
+        if len(arg_info.args) != 1:
+            print str(arg_info)
+            raise RuntimeError(
+                "provided function should have one argument but found "
+                "{0}".format(len(arg_info.args)))
+        # I don't think I can statically determine how many arguments
+        # a function will return so will have to check after calling
+        # the function
 
     def run(self):
         '''Ensure that any subclass implements this method'''
@@ -54,40 +91,28 @@ class SearchMethod(object):
         method'''
         return self._function
 
-    @function.setter
-    def function(self, function):
-        '''Set the function associated with this instance of search method'''
-        self._function = function
-
     @property
     def inputs(self):
         '''Return the input search parameters for this instance of search
         method'''
         return self._inputs
 
-    @inputs.setter
-    def inputs(self, inputs):
-        '''Set the input search parameters for this instance of search
-        method'''
-        self._inputs = inputs
-
     @property
     def state(self):
-        '''Return the xxx for this instance of search method'''
+        '''Return the state for this instance of search method'''
         return self._state
 
     @state.setter
     def state(self, state):
-        '''Set the xxx for this instance of search method'''
+        '''Set the state for this instance of search method'''
         self._state = state
 
 
 class BruteForce(SearchMethod):
     '''A search method that tests all input options'''
 
-    def __init__(self, function=None, inputs=None, state=None):
-        SearchMethod.__init__(self, function=function, inputs=inputs,
-                              state=state)
+    def __init__(self, inputs, function, state=None):
+        SearchMethod.__init__(self, inputs, function, state=state)
 
     def run(self):
         ''' perform the search over inputs'''
@@ -108,5 +133,8 @@ class BruteForce(SearchMethod):
                 my_output.append({name: option})
                 self._recurse(inputs[1:], my_output)
         else:
-            valid, result = self._function(output)
+            try:
+                valid, result = self._function(output)
+            except ValueError:
+                raise RuntimeError("function must return 2 values")
             print output, valid, result

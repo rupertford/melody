@@ -33,42 +33,28 @@
 #
 '''pytest tests for the Name class in the inputs.py melody file'''
 
-import pytest
 from melody.inputs import Choice
 
 
-@pytest.mark.xfail(reason="bug : inputs==None causes TypeError")
-def test_choice_class_vanilla():
-    '''check that initial values are set appropriately if they are not
-    provided'''
-    choice = Choice()
-    assert len(choice.options) == 0
-    assert choice.name is None
-
-
-def test_choice_class_value_inputs():
-    '''check that the Choice class returns the specified inputs'''
+def test_choice_class_value_vanilla():
+    '''check that the Choice class stores the required name and inputs
+    arguments correctly'''
     test_values = ["test1", "test2", "test3"]
-    choice = Choice(inputs=test_values)
+    test_name = "err"
+    choice = Choice(name=test_name, inputs=test_values)
     assert len(choice.options) == len(test_values)
     for idx, _ in enumerate(test_values):
         assert choice.options[idx] == test_values[idx]
+    assert choice.name == test_name
 
 
 def test_choice_class_value_pre():
     '''check that the Choice class returns the specified inputs modified
     by the pre value if it is provided'''
+    test_name = "umm"
     test_values = ["test1", "test2", "test3"]
     pre_value = "pre_"
-    choice = Choice(pre=pre_value, inputs=test_values)
+    choice = Choice(test_name, test_values, pre=pre_value)
     assert len(choice.options) == len(test_values)
     for idx, _ in enumerate(test_values):
         assert choice.options[idx] == pre_value+test_values[idx]
-
-
-@pytest.mark.xfail(reason="bug : inputs==None causes TypeError")
-def test_choice_class_name():
-    '''check that the choice class returns the specified name'''
-    test_name = "wife"
-    choice = Choice(name=test_name)
-    assert choice.name == test_name

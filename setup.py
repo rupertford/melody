@@ -44,7 +44,7 @@ URL = 'https://github.com/rupertford/melody'
 DOWNLOAD_URL = 'https://github.com/rupertford/melody'
 DESCRIPTION = 'lightweight python parameter search tool'
 LONG_DESCRIPTION = open('README.md').read()
-LICENSE='OSI Approved :: BSD 3-Clause License'
+LICENSE = 'OSI Approved :: BSD 3-Clause License'
 CLASSIFIERS = [
     'Development Status :: 3 - Alpha',
     'Environment :: Console',

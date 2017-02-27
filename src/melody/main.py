@@ -79,8 +79,6 @@ melody'''
     def search(self):
         '''Start the optimisation/search using the supplied optimisation
         method with the supplied inputs for the supplied function'''
-        search = self._method()
-        search.inputs = self._inputs
-        search.function = self._function
-        search.state = self._state
+        search = self._method(inputs=self._inputs, function=self._function,
+                              state=self._state)
         search.run()

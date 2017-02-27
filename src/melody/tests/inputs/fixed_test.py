@@ -37,24 +37,11 @@ from melody.inputs import Fixed
 
 
 def test_fixed_class_vanilla():
-    '''check that initial values are set to None if they are not
-    provided'''
-    fixed = Fixed()
-    assert len(fixed.options) == 1
-    assert fixed.options[0] is None
-    assert fixed.name is None
-
-
-def test_fixed_class_value():
-    '''check that the Fixed class returns the specified value'''
+    '''check that the Fixed class returns the correct values for the
+    required name and value arguments'''
+    test_name = "wife"
     test_value = "test"
-    fixed = Fixed(value=test_value)
+    fixed = Fixed(test_name, test_value)
     assert len(fixed.options) == 1
     assert fixed.options[0] == test_value
-
-
-def test_fixed_class_name():
-    '''check that the fixed class returns the specified name'''
-    test_name = "wife"
-    fixed = Fixed(name=test_name)
     assert fixed.name == test_name
