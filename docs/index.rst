@@ -14,8 +14,8 @@ Melody is a lightweight ...
 
    installation
    running
+   inputs
 
-.. inputs
 ..   extending
 .. function
 .. search method
