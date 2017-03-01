@@ -58,6 +58,16 @@ For example
 The above example will generate an input named ``input2`` with three
 values, ``a``, ``b`` and ``c``. The list can be arbitrarily long.
 
+The optional ``pre`` argument will prepend all inputs with the value
+contained in the string. For example
+::
+
+   >>> from melody.inputs import Choice
+   >>> inputs = [Choice(name="in", inputs=["a", "b", "c"], pre="val_")]
+
+The above example will generate an input named ``in`` with three
+values, ``val_a``, ``val_b`` and ``val_c``.
+
 IntRange
 ********
 
@@ -159,6 +169,12 @@ If the supported input classes do not cover your requirements then you
 can create your own input classes. All of the input classes inherit
 from the Input base class.
 
+.. note::
+
+   Please ignore the state argument and method in the ``Input``
+   class. These are not used at the moment and are placeholders for
+   future developments.
+
 .. autoclass:: melody.inputs.Input
     :members:
 
@@ -190,7 +206,9 @@ Switch values:
                Switch.__init__(self, name, off+append, on+append)
    >>> inputs = [SwitchAppend("switch", "a", "b", "_value")]
 
-
+Contributing
+++++++++++++
+   
 If you do create your own subclass and you think it might be a
 useful addition we ask that you consider contributing your code so
 that it can be incorporated into Melody for others to use.
