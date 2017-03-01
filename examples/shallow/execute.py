@@ -94,7 +94,7 @@ def execute(option):
                                     stdout=subprocess.PIPE)
     if make_process.wait() != 0:
         return False, []
-    _ = make_process.stderr.read()
+    # _ = make_process.stderr.read()
     stdout = make_process.stdout.read()
 
     # determine if the results are correct. We will need to look at

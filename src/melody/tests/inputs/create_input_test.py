@@ -51,46 +51,31 @@ def test_create_input():
     assert EXPECTED in result
 
 
-@pytest.mark.xfail(reason=("bug : incorrect input format error not caught "
-                           "correctly"))
 def test_option_wrong_format():
     '''check that we raise an exception if the input option is not in the
-    expected format'''
-    option = [EXPECTED]
-    result = create_input(option, TEMPLATE_NAME,
-                          template_location=TEMPLATE_DIR)
-    assert EXPECTED in result
+    expected format (a dictionary within a list).'''
+    option = ["fred"]
+    with pytest.raises(RuntimeError) as excinfo:
+        _ = create_input(option, TEMPLATE_NAME,
+                         template_location=TEMPLATE_DIR)
+    assert "Expecting a dictionary" in str(excinfo.value)
 
 
-@pytest.mark.xfail(reason=("bug : incorrect input value error not caught "
-                           "correctly"))
-def test_option_wrong_datatype():
-    '''test that we raise an exception if the datatype of the data is not
-    a string'''
-    expected = 7
-    option = [{"KEY": expected}]
-    result = create_input(option, TEMPLATE_NAME,
-                          template_location=TEMPLATE_DIR)
-    assert expected in result
-
-
-@pytest.mark.xfail(reason=("bug : template does not exist error not caught "
-                           "correctly"))
 def test_non_existant_template():
     '''test that we raise an exception if the specified template does not
     exist'''
     template_name = "invalid.txt"
-    result = create_input(OPTION, template_name,
-                          template_location=TEMPLATE_DIR)
-    assert EXPECTED in result
+    with pytest.raises(RuntimeError) as excinfo:
+        _ = create_input(OPTION, template_name,
+                         template_location=TEMPLATE_DIR)
+    assert "template '"+template_name+"' not found" in str(excinfo.value)
 
 
-@pytest.mark.xfail(reason=("bug : template does not exist error not caught "
-                           "correctly"))
-def test_non_existant_template_location():
+def test_missing_template_dir():
     '''test that we raise an exception if the specified template location
     does not exist'''
     template_dir = os.path.join(SCRIPT_DIR, "invalid")
-    result = create_input(OPTION, TEMPLATE_NAME,
-                          template_location=template_dir)
-    assert EXPECTED in result
+    with pytest.raises(RuntimeError) as excinfo:
+        _ = create_input(OPTION, TEMPLATE_NAME,
+                         template_location=template_dir)
+    assert "template '"+TEMPLATE_NAME+"' not found" in str(excinfo.value)

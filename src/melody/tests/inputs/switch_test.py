@@ -33,32 +33,38 @@
 #
 '''pytest tests for the Name class in the inputs.py melody file'''
 
+import pytest
 from melody.inputs import Switch
 
 
-def test_switch_class_vanilla():
-    '''check that initial values are set appropriately if they are not
-    provided'''
-    switch = Switch()
-    assert len(switch.options) == 2
-    assert switch.options[0] == ""
-    assert switch.options[1] == ""
-    assert switch.name is None
+def test_switch_class_exception():
+    '''check that we raise an exception if no values are provided for the
+    'off' and 'on' optional arguments'''
+    test_name = "light"
+    with pytest.raises(RuntimeError) as excinfo:
+        _ = Switch(test_name)
+    assert "at least one of 'off' or 'on'" in str(excinfo.value)
 
 
 def test_switch_class_value_off():
-    '''check that the Switch class returns the specified value for off'''
+    '''check that the Switch class returns the specified value for "off",
+    defaults to the required value for "on" and stores the correct
+    value for name'''
+    test_name = "light"
     test_value = "test"
-    switch = Switch(off=test_value)
+    switch = Switch(test_name, off=test_value)
     assert len(switch.options) == 2
     assert switch.options[0] == test_value
     assert switch.options[1] == ""
+    assert switch.name == test_name
 
 
 def test_switch_class_value_on():
-    '''check that the Switch class returns the specified value for on'''
+    '''check that the Switch class returns the specified value for "off" and
+    defaults to the required value for "on"'''
+    test_name = "light"
     test_value = "test"
-    switch = Switch(on=test_value)
+    switch = Switch(name=test_name, on=test_value)
     assert len(switch.options) == 2
     assert switch.options[0] == ""
     assert switch.options[1] == test_value
@@ -67,16 +73,10 @@ def test_switch_class_value_on():
 def test_switch_class_value_offon():
     '''check that the Switch class returns the specified values for off and
     on if they are both set'''
+    test_name = "light"
     test_off_value = "off"
     test_on_value = "on"
-    switch = Switch(off=test_off_value, on=test_on_value)
+    switch = Switch(test_name, off=test_off_value, on=test_on_value)
     assert len(switch.options) == 2
     assert switch.options[0] == test_off_value
     assert switch.options[1] == test_on_value
-
-
-def test_switch_class_name():
-    '''check that the switch class returns the specified name'''
-    test_name = "wife"
-    switch = Switch(name=test_name)
-    assert switch.name == test_name
