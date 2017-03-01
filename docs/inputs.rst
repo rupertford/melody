@@ -2,9 +2,8 @@
 Inputs
 ======
 
-Melody inputs specify the space that the user would like to
-search. Inputs are specified as a list of individual input
-objects.
+Melody inputs allow the user to specify the space that they would like
+to search. Inputs are specified as a list of individual input objects.
 
 Supported
 +++++++++
@@ -19,7 +18,8 @@ Fixed
 
 For example
 ::
-   
+
+   >>> from melody.inputs import Fixed
    >>> inputs = [Fixed(name="option1", value="value1")]
 
 The above example will generate an input named ``option1`` with the value
@@ -34,6 +34,7 @@ Switch
 For example
 ::
    
+   >>> from melody.inputs import Switch
    >>> inputs = [Switch(name="option1", off="dark", on="light")]
 
 The above example will generate an input named ``option1`` with two
@@ -51,7 +52,8 @@ Choice
 For example
 ::
    
-   >>> inputs = [Choice(name="input2", options=["a", "b", "c"])]
+   >>> from melody.inputs import Choice
+   >>> inputs = [Choice(name="input2", inputs=["a", "b", "c"])]
 
 The above example will generate an input named ``input2`` with three
 values, ``a``, ``b`` and ``c``. The list can be arbitrarily long.
@@ -65,6 +67,7 @@ IntRange
 For example
 ::
    
+   >>> from melody.inputs import IntRange
    >>> inputs = [IntRange(name="range1", low=0, high=3, step=1)]
 
 The above example will generate an input named ``range1`` with three
@@ -85,6 +88,7 @@ IntRange
 For example
 ::
    
+   >>> from melody.inputs import FloatRange
    >>> inputs = [FloatRange(name="range2", low=0.0, high=0.4, step=0.1)]
 
 
@@ -106,7 +110,8 @@ Subsets
 For example
 ::
    
-   >>> inputs = [Subsets(name="combinations", inputs=["a", "b", "c")]
+   >>> from melody.inputs import Subsets
+   >>> inputs = [Subsets(name="combinations", inputs=["a", "b", "c"])]
 
 
 The above example will generate an input named ``combinations`` with 8
@@ -131,8 +136,9 @@ all combinations of options are potentially valid inputs.
 If we combine two of the earlier examples into one ...
 ::
 
+   >>> from melody.inputs import Fixed, Choice
    >>> inputs = [FloatRange(name="range2", low=0.0, high=0.4, step=0.1),
-                 Choice(name="input2", options=["a", "b", "c"])]
+                 Choice(name="input2", inputs=["a", "b", "c"])]
 
 we will be specifying the following valid combinations for ``range2``
 and ``input2``: ``0.0, "a"``, ``0.0, "b"``, ``0.0, "c"``, ``0.1,
@@ -141,7 +147,7 @@ and ``input2``: ``0.0, "a"``, ``0.0, "b"``, ``0.0, "c"``, ``0.1,
 
 .. note::
 
-   the last input object specified in the list iterates fastest,
+   The last input object specified in the list iterates fastest,
    followed by the penultimate one etc. So, in the above example the
    values for ``input2`` are changing more rapidly than the values for
    ``range2``.
@@ -150,17 +156,41 @@ Extending
 +++++++++
 
 If the supported input classes do not cover your requirements then you
-can create your own input. All of the input classes inherit from the
-Input base class
+can create your own input classes. All of the input classes inherit
+from the Input base class.
 
 .. autoclass:: melody.inputs.Input
     :members:
 
-You can subclass the input class. For example:
+You can subclass the input class. For example, if you wanted to
+provide all values greater than a tolerance as inputs from a list of values:
+::
+   
+   >>> from melody.inputs import Input
+   >>> class IntTolerance(Input):
+           ''' returns values if they are greater than a tolerance '''
+           def __init__(self, name, inputs, tolerance):
+               options = []
+	       for value in inputs:
+	           if value>tolerance:
+	               options.append(value)
+           Input.__init__(self, name, options)
+   >>> inputs = [IntTolerance("tolerance", [8, 9, 2, 4, 10], 7)]
 
-TBD
 
-Alternatively you can subclass one of the supporting
-input types if that is simpler. For example:
+Alternatively you can subclass one of the supporting input types if
+that is simpler. For example, if you wanted to append a string to all
+Switch values:
+::
 
-TBD
+   >>> from melody.inputs import Switch
+   >>> class SwitchAppend(Switch):
+           ''' append a string to all switch values '''
+           def __init__(self, name, off, on, append):
+               Switch.__init__(self, name, off+append, on+append)
+   >>> inputs = [SwitchAppend("switch", "a", "b", "_value")]
+
+
+If you do create your own subclass and you think it might be a
+useful addition we ask that you consider contributing your code so
+that it can be incorporated into Melody for others to use.
