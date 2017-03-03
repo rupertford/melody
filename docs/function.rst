@@ -85,11 +85,11 @@ example.
 More examples of user-written Melody functions can be found in the
 Melody examples directory.
 
-Structure
-+++++++++
+Support
++++++++
 
-As explained earlier in the section it is up to the user to write a
-Melody function. A typical function might
+As explained earlier it is up to the user to write a Melody
+function. A typical function might
 
 1) Take the input values for the function call and write those into
    appropriate input files e.g. a make include file
@@ -114,28 +114,33 @@ For example:
        # extract the timing results
        return success, time
 
-Support
-+++++++
+As many user functions are likely to follow a similar path to the one
+described above it is expected that a set of utility routines can be
+built up to support the process.
 
-As the type of actions that are required to implement a function can
-recur, it is expected that a set of utilty routines can be built up
-to support this process.
+At this point one utility is provided. This utility is useful when
+setting up configuration files from the input data supplied to the
+function.
 
-At this point one utility is provided. This utility takes a dictionary
-of inputs and adds them to a template input file. Under the hood this
-uses jinja2 and therefore the format of the template file should
-follow jinja2 formatting rules.
+The utility takes the inputs to the function (or another equivalent
+data-structure created by the user) and matches any keys in the
+data-structure with keys within a template (using jinja2) replacing
+any matching key with its corresponding value.
 
-.. function:: melody.inputs.create_input
+.. autofunction:: melody.inputs.create_input
 
 For example
 ::
 
    > cat template.txt
-   ...
+   Hello {{name}}.
    > python
    >>> from melody.inputs import create_input
    >>> input = [{"name": "fred"}]
-   >>> result = create_input("template.txt", template_location=".", input)
+   >>> result = create_input(input, "template.txt",
+                             template_location=".")
    >>> print result
-   ...
+   Hello fred.
+
+Examples of the ``create_input`` function being used in Melody functions
+can be found in the Melody examples directory.
