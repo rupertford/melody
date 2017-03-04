@@ -130,13 +130,13 @@ combinations of values ``[]``, ``["a"]``, ``["b"]``, ``["c"]``,
 ``["a", "b"]``, ``["a", "c"]``, ``["b", "c"]`` and ``["a", "b", "c"]``.
 
 This option is useful when you have a set of inputs that are optional
-and can be used with eachother in any combination.
+and can be used with each other in any combination.
 
 
 Multiple input objects
 ++++++++++++++++++++++
 
-So far each of the suported input options has been presented
+So far each of the supported input options has been presented
 individually. You might naturally be wondering why inputs has been
 defined as a list of input objects.
 

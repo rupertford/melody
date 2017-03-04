@@ -43,7 +43,7 @@ installation instead
 
 If you would like to uninstall melody (after installing using the setup.py
 script) you can do so using pip. You may see a number of error messages but
-the installation should complete succesfully.
+the installation should complete successfully.
 ::
 
    $ pip uninstall melody

@@ -10,7 +10,7 @@ this space. These can also be written by the user. The :ref:`inputs`
 section discusses inputs in more detail.
 
 The user writes the Melody `function` to perform the particular task
-that requires analysis. Melody calls this function wth appropriate
+that requires analysis. Melody calls this function with appropriate
 inputs and expects to receive two return values once the function has
 completed. The :ref:`function` section discusses writing a Melody
 `function` in more detail.

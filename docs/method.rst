@@ -71,7 +71,7 @@ should inherit from the ``SearchMethod`` base class.
     :members:
 
 The user can subclass the ``SearchMethod`` base class. The ``run``
-method must be imlemented as this is called by the ``Melody`` class
+method must be implemented as this is called by the ``Melody`` class
 (see the :ref:`melody` section). The ``run`` method should take all of
 the supplied ``inputs`` and call the function appropriately.
 
