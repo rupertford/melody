@@ -28,7 +28,7 @@ license is provided when Melody is downloaded and installed.
 # Installation
 
 Melody will soon be available using pip. In the meantime Melody can be
-installed manually (see docs) and can be downloaded here:
+installed manually (see docs) and can be downloaded or cloned here:
 
 https://github.com/rupertford/melody
 
@@ -36,4 +36,4 @@ https://github.com/rupertford/melody
 
 Documentation is available here:
 
-https://readthedocs.io/projects/melody
+http://melody.readthedocs.io/en/documentation
