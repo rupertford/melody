@@ -17,7 +17,7 @@ relatively generic way so can be used to search over, or optimise any
 search space.
 
 Melody takes its name from the fact that optimisation is often called
-tuning and most good tunes have a good melody!
+tuning and most good tunes rely on a great melody!
 
 .. toctree::
    :maxdepth: 2
@@ -28,7 +28,7 @@ tuning and most good tunes have a good melody!
    inputs
    function
    method
-   
+
 
 Indices and tables
 ==================
