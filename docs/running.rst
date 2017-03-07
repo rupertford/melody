@@ -2,18 +2,19 @@
 Running
 =======
 
-Melody supports 3 main concepts, `inputs`, a `function` and a `method`.
+Melody supports 3 main concepts, `inputs`, an `objective function` and
+a `method`.
 
 Melody `inputs` define the search space over which the user would like
 to search. A number of pre-existing classes are provided to capture
 this space. These can also be written by the user. The :ref:`inputs`
 section discusses inputs in more detail.
 
-The user writes the Melody `function` to perform the particular task
-that requires analysis. Melody calls this function with appropriate
-inputs and expects to receive two return values once the function has
-completed. The :ref:`function` section discusses writing a Melody
-`function` in more detail.
+The user writes the Melody `objective function` to perform the
+particular task that requires analysis. Melody calls this function
+with appropriate inputs and expects to receive two return values once
+the function has completed. The :ref:`function` section discusses
+writing a Melody `objective function` in more detail.
 
 The Melody `method` defines how to search the input space. Currently
 there is only one option here, which is brute force. The user may
@@ -26,8 +27,8 @@ Melody
 ++++++
 
 A `Melody` convenience class binds the three concepts (`inputs`,
-`function` and `method`) together and can be used to initiate the
-search.
+`objective function` and `method`) together and can be used to
+initiate the search.
 
 .. note::
 
@@ -44,7 +45,7 @@ Example
 
 This section presents a simple Melody example which iterates over all
 possible combinations of two types of input, a choice of specified
-values and a range of integer values. The user supplied empty function
+values and a range of integer values. The empty objective function
 simply returns True and a 0 each time it is called.
 ::
 

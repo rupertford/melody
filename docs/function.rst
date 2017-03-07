@@ -1,45 +1,45 @@
 .. _function:
 
-Function
-========
+Objective Function
+==================
 
-Melody functions are user-written Python functions that perform the
-action that the user would like to be optimised and/or
+Melody objective functions are user-written Python functions that
+perform the action that the user would like to be optimised and/or
 investigated. Melody is not aware of what this action is, it simply
-calls the Melody function with a set of inputs and collects the
+calls the objective function with a set of inputs and collects the
 result(s).
 
 If, for example, you wanted to find the time taken to perform a google
 search for different keywords you would use the Melody inputs to
-specify the keywords themselves and create a Melody function to take a
-particular keyword as input, perform and time the google search for
-that keyword and then return the time taken for that particular
-search.
+specify the keywords themselves and create a Melody objective function
+to take a particular keyword as input, perform and time the google
+search for that keyword and then return the time taken for that
+particular search.
 
 API
 +++
 
-A user-written Melody function must contain a single input
-argument. Melody will call the function with particular input values
-from the inputs specified by the user and will expect results to be
-provided when the function completes.
+A Melody objective function must contain a single input
+argument. Melody will call the objective function with particular
+input values from the inputs specified by the user and will expect
+results to be provided when the objective function completes.
 
-The input argument is a Python list containing one or more dictionaries,
-each containing a key/value pair. The number of dictionary entries
-will correspond to the number of input objects specified by the
-user. Each dictionary will contain the name of the input as the key
-and one of its specified input options as the value.
+The input argument is a Python list containing one or more
+dictionaries, each containing a key/value pair. The number of
+dictionary entries will correspond to the number of input objects
+specified by the user. Each dictionary will contain the name of the
+input as the key and one of its specified input options as the value.
 
 Results are returned as two arguments. The first argument is a boolean
-value indicating whether the function was successful or not. For
-example, the a code might not compile, or the results might be
-incorrect. In this case ``False`` should be returned.
+value indicating whether the objective function was successful or
+not. For example, the a code might not compile, or the results might
+be incorrect. In this case ``False`` should be returned.
 
 The second argument returns the results that the user would like to be
-optimised and/or evaluated for the function. For example, this might
-be the time a code took to run. The format of the second argument
-should be a dictionary of key/value pairs, but the format is not
-currently enforced.
+optimised and/or evaluated for the objective function. For example,
+this might be the time a code took to run. The format of the second
+argument should be a dictionary of key/value pairs, but the format is
+not currently enforced.
 ::
    
    def function(input):
@@ -69,29 +69,29 @@ section.
 
 In the above example we have a single input object which can take two
 values (either ``"dark"`` or ``"light"``. We use the BruteForce method
-(see Section :ref:`method-brute-force`) so the user-written function
-will be called twice, once for each value. As the function prints out
-the input values it can be seen that it is called twice and that the
-input is a list containing a single dictionary (as there is only one
-input object) and that dictionary contains a single key, the name
+(see Section :ref:`method-brute-force`) so the objective function will
+be called twice, once for each value. As the objective function prints
+out the input values it can be seen that it is called twice and that
+the input is a list containing a single dictionary (as there is only
+one input object) and that dictionary contains a single key, the name
 given to the input object (``"option1"``) and a value which is one of
 the options provided in the input object (either ``"dark"`` or
-``"light"``). The function then returns ``True`` as it is always
-successful and a dictionary containing a key/value pair with a fixed
-value (``10``) that (in a useful function) would be used to indicate
-how the function performed. By default melody prints out the
-particular inputs passed to the function and the results provided by
-the function. These values can also be seen in the output from the
-example.
+``"light"``). The objective function then returns ``True`` as it is
+always successful and a dictionary containing a key/value pair with a
+fixed value (``10``) that (in a useful objective function) would be
+used to indicate how the objective function performed. By default
+melody prints out the particular inputs passed to the objective
+function and the results provided by the objective function. These
+values can also be seen in the output from the example.
 
-More examples of user-written Melody functions can be found in the
+More examples of Melody objective functions can be found in the
 Melody examples directory.
 
 Support
 +++++++
 
 As explained earlier it is up to the user to write a Melody
-function. A typical function might
+objective function. A typical objective function might
 
 1) Take the input values for the function call and write those into
    appropriate input files e.g. a make include file
@@ -107,7 +107,7 @@ For example:
 ::
 
    def function(input):
-       ''' user written function '''
+       ''' user written objective function '''
        # use input to set compiler flag in Makefile
        # build the code with the Makefile
        # check it built OK. If not return False
@@ -116,18 +116,18 @@ For example:
        # extract the timing results
        return success, time
 
-As many user-written Melody functions are likely to follow a similar
-path to the one described above it is expected that a set of utility
+As many Melody objective functions are likely to follow a similar path
+to the one described above it is expected that a set of utility
 routines can be built up to support the process.
 
 At this point one utility is provided. This utility is useful when
 setting up configuration files from the input data supplied to the
-function.
+objective function.
 
-The utility takes the inputs to the function (or another equivalent
-data-structure created by the user) and matches any keys in the
-data-structure with keys within a template (using jinja2) replacing
-any matching key with its corresponding value.
+The utility takes the inputs to the objective function (or another
+equivalent data-structure created by the user) and matches any keys in
+the data-structure with keys within a template (using jinja2)
+replacing any matching key with its corresponding value.
 
 .. autofunction:: melody.inputs.create_input
 
@@ -144,5 +144,5 @@ For example
    >>> print result
    Hello fred.
 
-Examples of the ``create_input`` function being used in Melody functions
-can be found in the Melody examples directory.
+Examples of the ``create_input`` function being used in Melody
+objective functions can be found in the Melody examples directory.

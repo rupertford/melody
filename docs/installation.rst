@@ -44,7 +44,10 @@ installation instead
 .. note ::
 
    In some systems the resultant installation directory is not
-   automatically added to the PYTHONPATH so must be done manually.
+   automatically added to the PYTHONPATH so must be done manually. The
+   installation path will be
+   ``${HOME}/.local/lib/pythonx.y/site-packages`` where ``x.y`` is the
+   version of Python being used.
    
 If you would like to uninstall melody (after installing using the setup.py
 script) you can do so using pip. You may see a number of error messages but
