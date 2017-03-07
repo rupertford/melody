@@ -6,14 +6,15 @@ Function
 Melody functions are user-written Python functions that perform the
 action that the user would like to be optimised and/or
 investigated. Melody is not aware of what this action is, it simply
-calls the function with a set of inputs and collects the result(s).
+calls the Melody function with a set of inputs and collects the
+result(s).
 
 If, for example, you wanted to find the time taken to perform a google
 search for different keywords you would use the Melody inputs to
 specify the keywords themselves and create a Melody function to take a
-particular keyword as input to the function, perform and time the
-google search for that keyword and then return the time taken for that
-particular search.
+particular keyword as input, perform and time the google search for
+that keyword and then return the time taken for that particular
+search.
 
 API
 +++
@@ -115,9 +116,9 @@ For example:
        # extract the timing results
        return success, time
 
-As many user functions are likely to follow a similar path to the one
-described above it is expected that a set of utility routines can be
-built up to support the process.
+As many user-written Melody functions are likely to follow a similar
+path to the one described above it is expected that a set of utility
+routines can be built up to support the process.
 
 At this point one utility is provided. This utility is useful when
 setting up configuration files from the input data supplied to the

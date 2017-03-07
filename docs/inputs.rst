@@ -38,11 +38,11 @@ For example
    >>> from melody.inputs import Switch
    >>> inputs = [Switch(name="option1", off="dark", on="light")]
 
-The above example will generate an input named ``option1`` with two
-values, ``dark`` and ``light``. If one of the arguments ``off`` or
-``on`` is not provided then an empty string is returned for that
-option. If both of the arguments ``off`` and ``on`` are not provided
-then a ``Runtime`` exception is raised.
+The above example will generate an input named ``option1`` which can
+take one of two values, ``dark`` and ``light``. If one of the
+arguments ``off`` or ``on`` is not provided then an empty string is
+returned for that option. If both of the arguments ``off`` and ``on``
+are not provided then a ``Runtime`` exception is raised.
 
 Choice
 ******
@@ -56,8 +56,9 @@ For example
    >>> from melody.inputs import Choice
    >>> inputs = [Choice(name="input2", inputs=["a", "b", "c"])]
 
-The above example will generate an input named ``input2`` with three
-values, ``a``, ``b`` and ``c``. The list can be arbitrarily long.
+The above example will generate an input named ``input2`` which can
+take one of three values, ``a``, ``b`` and ``c``. The list can be
+arbitrarily long.
 
 The optional ``pre`` argument will prepend all inputs with the value
 contained in the string. For example
@@ -86,9 +87,8 @@ integer values, ``0``, ``1`` and ``2``.
 
 .. warning::
 
-   You might expect the integer 3 to appear, however consistency is
-   being maintained with the Python range function which will not
-   return this value.
+   One might expect the integer 3 to appear, however, in keeping with
+   the Python range function, this value is excluded.
 
 IntRange
 ********
@@ -108,9 +108,8 @@ floating point values, ``0.0``, ``0.1``, ``0.2`` and ``0.3``.
 
 .. warning::
 
-   You might expect the value 0.4 to appear, however consistency is
-   being maintained with the Python range function which will not
-   return this value.
+   One might expect the value 0.4 to appear, however, in keeping with
+   the Python range function, this value is excluded.
 
 Subsets
 *******
@@ -130,7 +129,8 @@ combinations of values ``[]``, ``["a"]``, ``["b"]``, ``["c"]``,
 ``["a", "b"]``, ``["a", "c"]``, ``["b", "c"]`` and ``["a", "b", "c"]``.
 
 This option is useful when you have a set of inputs that are optional
-and can be used with each other in any combination.
+and can be used with each other in any combination e.g. compiler
+flags.
 
 
 Multiple input objects

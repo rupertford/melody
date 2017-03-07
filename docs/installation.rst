@@ -41,9 +41,14 @@ installation instead
    $ cd <melody_dir>
    $ python setup.py install --user
 
+.. note ::
+
+   In some systems the resultant installation directory is not
+   automatically added to the PYTHONPATH so must be done manually.
+   
 If you would like to uninstall melody (after installing using the setup.py
 script) you can do so using pip. You may see a number of error messages but
-the installation should complete successfully.
+the removal should complete successfully.
 ::
 
    $ pip uninstall melody
@@ -78,3 +83,30 @@ If you have successfully installed melody then you should be able to import it f
    $ python
    >>> import melody
    >>>
+
+There is also a test suite, written to use pytest, that can be used to
+test the installation. If you do not have pytest you can install it
+using ``pip install pytest``.
+::
+
+   $ py.test
+   ============================= test session starts ==============================
+   platform linux2 -- Python 2.7.12, pytest-2.8.7, py-1.4.31, pluggy-0.3.1
+   rootdir: /xxx/melody, inifile: 
+   plugins: cov-2.4.0
+   collected 33 items 
+   
+   src/melody/tests/inputs/choice_test.py ..
+   src/melody/tests/inputs/create_input_test.py ....
+   src/melody/tests/inputs/fixed_test.py .
+   src/melody/tests/inputs/floatrange_test.py .
+   src/melody/tests/inputs/input_test.py ..
+   src/melody/tests/inputs/intrange_test.py .
+   src/melody/tests/inputs/subsets_test.py .
+   src/melody/tests/inputs/switch_test.py ....
+   src/melody/tests/main/melody_test.py ....
+   src/melody/tests/search/bruteforce_test.py .x..
+   src/melody/tests/search/searchmethod_test.py .........
+   
+   ===================== 32 passed, 1 xfailed in 0.25 seconds =====================
+   
