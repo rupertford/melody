@@ -56,3 +56,10 @@ script:
 after_success:
 
   - coveralls
+deploy:
+  provider: pypi
+  user: rupertford
+  password:
+    secure: iksI86z1sRSq3fUs0zQPz3h63kW7IJpNxhrxJILj6v0mLWz8kzKdaswDtPzVjDAZxrxbd+msbL9JMFI/LBRrxF6yppMzGNemAYYvBb0acLDsk5Kbj/iYU58cb4uuLoGFB0NmtZD43KRWWXMvti06dEC+s3SoJybdz2xdV1OePR9tpzs6mK6kB80cjWa1nMih69vWfXxMk8E6slc1fFhbeUQurv9qinSjLeR0+ScRJBbtCnleyA5K3yQfhV9AeVYWAe2YVlKo9bgK77VFxKbE2B+82jiZ/gZDulDJfWwFyl4JdmvWcynWahDbJyoah1KE/FV6f+gzLPYMaCGyCLCAAJw1l/RbGqfWcOmZKHvNrklQ8bURU+oILpgcCTtv8eATf+16D+w2oKVj0MaAzwa2EQ9N3tUtXAQBpjYGqAhdpEHjKyMkorNNGHcNkL4cdZXi8U4l+0xQc0Q85+SKzcEyeYpiWPQ2qM+nrZQ2CcBztmpCuddHmoLDhjVnhbVSJh+qxoR2HdJ6MDYrYX/V1/UEh6GIIa47//W8T/6PAjC6cNhKltvOrTy4wWjMFVs8lCkadW7Fu80Tma5HiEaIBmVlM7sEu/SOi0dl+eMzAf5KepmkpzAnwoE4cSggiNM/7xgcu7T7KWbzozT9j27jz8O9fQ7jYbHVMHrUfruIfFKQwCk=
+  on:
+    tags: true
