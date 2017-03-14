@@ -2,8 +2,58 @@
 Installation
 ============
 
-Downloading
-+++++++++++
+Python version
+++++++++++++++
+
+Melody is currently tested with Python 2.7.
+
+Using pip
++++++++++
+
+You can install and uninstall using pip.
+::
+
+   $ sudo pip install melody
+   $ sudo pip uninstall melody
+
+If you don't have admin rights you can install and uninstall locally.
+::
+   
+   $ pip install melody --user
+   $ pip uninstall melody
+
+.. note ::
+
+   In some systems the resultant installation directory for a local
+   install is not automatically added to the PYTHONPATH so must be
+   done manually. The installation path will be
+   ``${HOME}/.local/lib/pythonx.y/site-packages`` where ``x.y`` is the
+   version of Python being used.
+
+Downloading and installing
+++++++++++++++++++++++++++
+
+We recommend using pip for installation but if you would prefer to
+download and install locally then follow the instructions in this
+section.
+
+Latest release
+**************
+
+First download the source from github. You can download a zip file ...
+::
+
+   $ wget https://github.com/rupertford/melody/archive/0.1.1.zip
+   $ unzip 0.1.1.zip
+
+or clone the repository and switch to the latest release ...
+::
+ 
+   $ git clone https://github.com/rupertford/melody.git
+   $ git checkout tags/0.1.1
+
+Latest stable version
+*********************
 
 First download the source from github. You can download a zip file ...
 ::
@@ -11,18 +61,13 @@ First download the source from github. You can download a zip file ...
    $ wget https://github.com/rupertford/melody/archive/master.zip
    $ unzip master.zip
 
-or clone the repository ...
+or clone the repository and switch to the latest release ...
 ::
  
    $ git clone https://github.com/rupertford/melody.git
 
-Python version
-++++++++++++++
-
-Melody is currently tested on Python 2.7.
-
 Installation
-++++++++++++
+************
 
 Using setup.py
 --------------
@@ -88,7 +133,8 @@ If you have successfully installed melody then you should be able to import it f
    >>>
 
 There is also a test suite, written to use pytest, that can be used to
-test the installation. If you do not have pytest you can install it
+test the installation. Note, the tests are not included in the pip
+installation procedure. If you do not have pytest you can install it
 using ``pip install pytest``.
 ::
 

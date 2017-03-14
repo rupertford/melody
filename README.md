@@ -27,10 +27,12 @@ license is provided when Melody is downloaded and installed.
 
 # Installation
 
-Melody will soon be available using pip. In the meantime Melody can be
-installed manually (see docs) and can be downloaded or cloned here:
+Melody can be installed and uninstalled using pip.
 
-https://github.com/rupertford/melody
+```
+> sudo pip install melody
+> sudo pip uninstall melody
+```
 
 # Documentation
 
